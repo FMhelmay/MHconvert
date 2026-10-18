@@ -1,6 +1,5 @@
 use postgres::{Client, NoTls/*, Error*/};
 use std::process::Command;
-
 struct WorkInfo{
     task: String,
     status: bool,
@@ -17,10 +16,9 @@ fn main() {
     //task_list = get_data_sql(client: &mut Client);
     //println!("Task:\n{}Path:\n{}\n--------------", get_data_sql.task, get_data_sql.path);
     //Ok(())
-
-
     let command: &str = "ffmpeg -y -i \"Chips Lace？! Silksong Mods Are CRAZY… [66KnSJw5xXM].webm\" \"Chips Lace? HK-S.mp4\"";
     let path: &str = "/home/mplhelmay/Documents/test/sql_testing2";
+
 
     if let Some(nf_summ_respone_sql) = get_data_sql(&mut client) {
         let summ_respone_sql = WorkInfo{
@@ -47,7 +45,7 @@ let task_data = get_data_sql(&mut client).unwrap();
 claim_data_sql(&mut client, &task_data.id);
 run_command(&task_data.task, &task_data.path);
 remove_data_sql(&mut client, &task_data.id);
-println!("STARTED");
+println!("ENDED");
 }
 
 
@@ -72,14 +70,18 @@ fn get_data_sql(client: &mut Client) -> Option<WorkInfo> {
     }
 }
 
+
+//Add data
 fn add_data_sql(client: &mut Client, data: &WorkInfo) {
     client.execute("INSERT INTO tasks VALUES ($1, $2, $3, $4, $5);", &[&data.task, &data.status, &data.path, &data.id, &data.is_arhive]);
 }
 
+//Take data
 fn claim_data_sql(client: &mut Client, id: &i16) {
     client.execute("UPDATE tasks SET status = true WHERE id = $1;", &[&id]);
 }
 
+//Delete data
 fn remove_data_sql(client: &mut Client, id: &i16) {
     client.execute("DELETE FROM tasks WHERE id = $1;", &[&id]);
 }
