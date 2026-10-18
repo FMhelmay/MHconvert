@@ -1,23 +1,29 @@
-use postgres::{Client, NoTls/*, Error*/};
+use postgres::{Client, NoTls, Error};
 use std::process::Command;
+
+let mut client = Client::connect("
+    host=127.0.0.1
+    port=5432
+    user=postgres
+    password=Deltaforce
+    dbname=sql_filebase_branch_O_FW", NoTls).unwrap();
+
+trait status_changer {
+    fn change(&self)
+}
+
 struct WorkInfo{
-    task: String,
-    status: bool,
-    path: String,
-    id: i16,
-    is_arhive: bool
+    path: &str,
+    task: &str,
+    status: &bool,
+    id: &i16,
 }
 
 
 fn main() {
     println!("STARTED");
-    let mut client = Client::connect("host=127.0.0.1 port=5432 user=postgres password=Deltaforce dbname=sql_filebase", NoTls).unwrap();
-
-    //task_list = get_data_sql(client: &mut Client);
-    //println!("Task:\n{}Path:\n{}\n--------------", get_data_sql.task, get_data_sql.path);
-    //Ok(())
-    let command: &str = "ffmpeg -y -i \"Chips Lace？! Silksong Mods Are CRAZY… [66KnSJw5xXM].webm\" \"Chips Lace? HK-S.mp4\"";
-    let path: &str = "/home/mplhelmay/Documents/test/sql_testing2";
+    let TESTS_command: &str = "ffmpeg -y -i \"Chips Lace？! Silksong Mods Are CRAZY… [66KnSJw5xXM].webm\" \"Chips Lace? HK-S.mp4\"";
+    let TESTS_path: &str = "/home/mplhelmay/Documents/test/sql_testing2";
 
 
     if let Some(nf_summ_respone_sql) = get_data_sql(&mut client) {
