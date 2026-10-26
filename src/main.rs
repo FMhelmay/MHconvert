@@ -9,7 +9,7 @@ fn main() {
 
 
 	for file in files {
-		let file0cut: &str = files[i].split('/').next_back().unwrap();
+		let file0cut: &str = file.split('/').next_back().unwrap();
 		println!("{}", file0cut);
 	}
 }
