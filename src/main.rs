@@ -11,7 +11,8 @@ fn main() {
 	let _task: &str = "mp4";
 
 	for file in files {
-		let file0path: &str = Path::parent(file).to_str().unwrap();
+		let file_sf = Path::new(file);
+		let file0path: &str = file_sf.parent().unwrap().to_str().unwrap();
 		println!("file path: {}", file0path);
 		//let file0name: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
 		//println!("ffmpeg -i \"{}\" \"{}{}.{}\"", file, file0path, file0name, task);
