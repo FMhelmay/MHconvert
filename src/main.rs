@@ -9,7 +9,7 @@ fn main() {
 	let task: &str = "mp4";
 
 	for file in files {
-		let file0cut: &str = file.split('/').next_back().unwrap().split('.').next_back().unwrap();
+		let file0cut: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
 		println!("{}.{}", file0cut, task);
 		//filename with mp4 type
 		
