@@ -13,7 +13,7 @@ fn main() {
 	for file in files {
 		let file_sf = Path::new(file);
 		let file0path: &str = file_sf.parent().unwrap().to_str().unwrap();
-		println!("file path: {}", file0path);
+		println!("file path: {}/", file0path);
 		//let file0name: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
 		//println!("ffmpeg -i \"{}\" \"{}{}.{}\"", file, file0path, file0name, task);
 		//filename with mp4 type
