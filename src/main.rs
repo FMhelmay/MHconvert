@@ -10,7 +10,8 @@ fn main() {
 	println!("{}", status);
 
 
-	
-	let file0cut: &str = files[0].split('/').next_back().unwrap();
-	println!("{}", file0cut)
+	for i in 0..files_count {
+		let file0cut: &str = files[i].split('/').next_back().unwrap();
+		println!("{}", file0cut);
+	}
 }
