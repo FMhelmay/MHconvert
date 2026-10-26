@@ -8,13 +8,13 @@ fn main() {
     				        "/home/mplhelmay/Documents/test/tz3_testtttt/Коденька_Уведомление _Сердце__2026-09-30-18-32-30.webm"];
     let status = Command::new("sh").arg("-c").current_dir("/home/mplhelmay/Documents/r").arg("ls").status().expect("Не удалось запустить процесс");
 	println!("{}", status);
-	let task: &str = "mp4";
+	let _task: &str = "mp4";
 
 	for file in files {
 		let file0path: &str = Path::new(file).to_str().unwrap();
 		println!("file path: {}", file0path);
-		let file0name: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
-		println!("ffmpeg -i \"{}\" \"{}{}.{}\"", file, file0path, file0name, task);
+		//let file0name: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
+		//println!("ffmpeg -i \"{}\" \"{}{}.{}\"", file, file0path, file0name, task);
 		//filename with mp4 type
 		
 	}
