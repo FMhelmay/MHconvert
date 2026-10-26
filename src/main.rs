@@ -1,4 +1,6 @@
 use std::process::Command;
+use std::path::Path;
+
 
 fn main() {
     let files: [&str; 3] = ["/home/mplhelmay/Documents/test/tz3_testtttt/Коденька_Уведомление _Звезда__2026-09-30-18-33-08.webm",
@@ -9,7 +11,7 @@ fn main() {
 	let task: &str = "mp4";
 
 	for file in files {
-		let file0path: &str = file.split('/').next().unwrap();
+		let file0path: &str = Path::new(file).to_str().unwrap();
 		println!("file path: {}", file0path);
 		let file0name: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
 		println!("ffmpeg -i \"{}\" \"{}{}.{}\"", file, file0path, file0name, task);
