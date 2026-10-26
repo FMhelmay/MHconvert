@@ -16,7 +16,7 @@ fn main() {
 		//println!("file path: {}", file0path);
 
 		let file0name: &str = file.split('.').next().unwrap();
-		println!("ffmpeg -i  \"{}\"    \"{}.{}\"", file, file0name, task);
+		println!("ffmpeg -i \"{}\"\"{}.{}\"", file, file0name, task);
 		//filename with mp4 type
 		
 	}
