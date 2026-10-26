@@ -11,6 +11,6 @@ fn main() {
 
 
 	
-	let file0cut: &str = files[0].split('/').last().unwrap();
+	let file0cut: &str = files[0].split('/').next_back().unwrap();
 	println!("{}", file0cut)
 }
