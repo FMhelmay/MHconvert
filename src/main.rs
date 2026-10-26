@@ -10,7 +10,7 @@ fn main() {
 
 	for file in files {
 		let file0cut: &str = file.split('/').next_back().unwrap().split('.').next().unwrap();
-		println!("ffmpeg -i {} {}", file, file0cut);
+		println!("ffmpeg -i \"{}\" \"{}.{}\"", file, file0cut, task);
 		//filename with mp4 type
 		
 	}
