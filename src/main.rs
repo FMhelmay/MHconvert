@@ -17,6 +17,6 @@ fn main() {
 
 		let file0name: &str = file.split('.').next().unwrap();
 		let file0name2: String = format!("{}.{}", file0name, task);
-		Command::new("ffmpeg").arg(file).arg(file0name2).status().expect("Не удалось запустить процесс");
+		Command::new("ffmpeg -i").arg(file).arg(file0name2).status().expect("Не удалось запустить процесс");
 	}
 }
