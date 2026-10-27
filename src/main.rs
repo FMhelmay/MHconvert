@@ -1,4 +1,4 @@
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use std::io;
 use rfd::FileDialog;
@@ -17,7 +17,16 @@ fn main() {
 	for file in files {
 		let file0name: &str = file.to_str().unwrap().split('.').next().unwrap();
 		let file0name2: String = format!("{}.{}", file0name, task);
-		Command::new("ffmpeg").arg("-i").arg(file).arg(file0name2).status().expect("Не удалось запустить процесс");
+		Command::new("ffmpeg")
+					.arg("-y")
+					.arg("-loglevel").arg("quiet")
+					.arg("-threads").arg("0")
+					.arg("-i").arg(&file)
+					.arg(file0name2)
+					.stdout(Stdio::null())
+					.stderr(Stdio::null())
+					.status()
+					.expect("Не удалось запустить процесс");
 	}
 }
 
