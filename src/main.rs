@@ -5,17 +5,15 @@ use rfd::FileDialog;
 
 
 fn main() {
-    let files: Vec<PathBuf> = select_files().unwrap();
-    let status = Command::new("sh").arg("ls").status().expect("Не удалось запустить процесс");
-	println!("{}", status);
-	
-	//let task: &str = "mp4";
-	let mut task = String::new();
-	println!("Select file type number (1-7): ");
+	let output_user = select_files().unwrap();
+    let files: Vec<PathBuf> = output_user;
+	println!("{}", files);
+	let mut u_input_task = String::new();
+	println!("Select file type (webm/mp4/mkv/mov/avi/ogg/raw): ");
 	io::stdin()
-		.read_line(&mut task)
+		.read_line(&mut u_input_task)
 		.expect("Ничего не введено");
-	
+	let task: &str = u_input_task.trim();
 	for file in files {
 		let file0name: &str = file.to_str().unwrap().split('.').next().unwrap();
 		let file0name2: String = format!("{}.{}", file0name, task);
