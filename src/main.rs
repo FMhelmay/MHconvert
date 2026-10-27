@@ -7,7 +7,7 @@ use rfd::FileDialog;
 fn main() {
 	let output_user = select_files().unwrap();
     let files: Vec<PathBuf> = output_user;
-	println!("{}", files);
+	println!("{:?}", files);
 	let mut u_input_task = String::new();
 	println!("Select file type (webm/mp4/mkv/mov/avi/ogg/raw): ");
 	io::stdin()
