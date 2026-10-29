@@ -2,14 +2,15 @@ use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use std::io;
 use rfd::FileDialog;
-
+use iced;
+use iced::{Theme};
 
 fn main() {
 
-	iced::application("Video Converter", Converter::update, Converter::view)
+	iced::application("Video Converter", ConvData::conv_objects, ConvData::conv_logic)
 	    .theme(|_| Theme::Dark)   // или свой
-	    .run();
-
+	     .run();
+	
 
 
 
@@ -37,6 +38,15 @@ fn main() {
 					.expect("Не удалось запустить процесс");
 	}
 }
+struct ConvData{
+	files: Vec<PathBuf>,
+	file_ext: String
+}
+impl ConvData {
+	fn conv_objects(&mut self){}
+	fn conv_logic(&self){}
+}
+
 
 fn select_files() -> Result<Vec<PathBuf>, i32> {
 	let files = FileDialog::new()
