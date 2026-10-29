@@ -8,7 +8,7 @@ fn main() {
 
 	iced::application("Video Converter", Converter::update, Converter::view)
 	    .theme(|_| Theme::Dark)   // или свой
-	    .run()
+	    .run();
 
 
 
