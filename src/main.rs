@@ -1,4 +1,7 @@
-use iced::widget::{button, column, text, Column};
+use iced::widget::{/*button, column, text, */pick_list/*, Column*/};
+use iced::Element;
+
+const Availible_files_ext: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
 
 pub fn main() -> iced::Result {
     iced::run(Counter::update, Counter::view)
@@ -6,32 +9,30 @@ pub fn main() -> iced::Result {
 
 #[derive(Default)]
 struct Counter {
-    value: i64,
+    selected_ext: Option<&'static str>
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 enum Message {
-    Increment,
-    Decrement,
+    ExtSelected(&'static str)
 }
 
 impl Counter {
     fn update(&mut self, message: Message) {
-        match message {
-            Message::Increment => {
-                self.value += 1;
-            }
-            Message::Decrement => {
-                self.value -= 1;
-            }
+        match message{
+            Message::ExtSelected(ext) => {
+                println!("{}",ext);
+                self.selected_ext = Some(ext); 
+			}
         }
     }
 
-    fn view(&self) -> Column<'_, Message> {
-        column![
-            button("+").on_press(Message::Increment),
-            text(self.value),
-            button("-").on_press(Message::Decrement),
-        ]
+    fn view(&self) -> Element<Message> {
+        pick_list(
+        	Availible_files_ext,
+        	self.selected_ext,
+        	Message::ExtSelected)
+        	.placeholder("Выберите расширение...")
+        	.into()
     }
 }
