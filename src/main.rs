@@ -2,19 +2,17 @@ use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use std::io;
 use rfd::FileDialog;
+use iced::widget::{button, column, text, Column};
 
 
-fn main() {
+fn main() -> iced::Result {
 
-	iced::application("Video Converter", Converter::update, Converter::view)
-	    .theme(|_| Theme::Dark)   // или свой
-	    .run();
 
 
 
 
 	let output_user = select_files().unwrap();
-    let files: Vec<PathBuf> = output_user;
+	let files: Vec<PathBuf> = output_user;
 	println!("{:?}", files);
 	let mut u_input_task = String::new();
 	println!("Select file type (webm/mp4/mkv/mov/avi/ogg/raw): ");
@@ -26,17 +24,67 @@ fn main() {
 		let file0name: &str = file.to_str().unwrap().split('.').next().unwrap();
 		let file0name2: String = format!("{}.{}", file0name, task);
 		Command::new("ffmpeg")
-					.arg("-y")
-					.arg("-loglevel").arg("quiet")
-					.arg("-threads").arg("0")
-					.arg("-i").arg(&file)
-					.arg(file0name2)
-					.stdout(Stdio::null())
-					.stderr(Stdio::null())
-					.status()
-					.expect("Не удалось запустить процесс");
+			.arg("-y")
+			.arg("-loglevel").arg("quiet")
+			.arg("-threads").arg("0")
+			.arg("-i").arg(&file)
+			.arg(file0name2)
+			.stdout(Stdio::null())
+			.stderr(Stdio::null())
+			.status()
+			.expect("Не удалось запустить процесс");
 	}
+
+
+	iced::run(Converter::update, Converter::view)
 }
+
+
+#[derive(Default)]
+struct Converter {
+    value: i64,
+}
+
+#[derive(Debug, Clone, Copy)]
+enum Message {
+    Increment,
+    Decrement,
+}
+
+impl Converter {
+    fn update(&mut self, message: Message) {
+        match message {
+            Message::Increment => {
+                self.value += 1;
+            }
+            Message::Decrement => {
+                self.value -= 1;
+            }
+        }
+    }
+
+    fn view(&self) -> Column<'_, Message> {
+        column![
+            button("+").on_press(Message::Increment),
+            text(self.value),
+            button("-").on_press(Message::Decrement),
+        ]
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 fn select_files() -> Result<Vec<PathBuf>, i32> {
 	let files = FileDialog::new()
