@@ -5,6 +5,14 @@ use rfd::FileDialog;
 
 
 fn main() {
+
+	iced::application("Video Converter", Converter::update, Converter::view)
+	    .theme(|_| Theme::Dark)   // или свой
+	    .run()
+
+
+
+
 	let output_user = select_files().unwrap();
     let files: Vec<PathBuf> = output_user;
 	println!("{:?}", files);
