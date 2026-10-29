@@ -29,8 +29,8 @@ fn main() -> iced::Result {
 			.arg("-threads").arg("0")
 			.arg("-i").arg(&file)
 			.arg(file0name2)
-			.stdout(Stdio::null())
-			.stderr(Stdio::null())
+			//.stdout(Stdio::null())
+			//.stderr(Stdio::null())
 			.status()
 			.expect("Не удалось запустить процесс");
 	}
