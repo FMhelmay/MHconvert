@@ -1,10 +1,10 @@
-use std::process::{Command, Stdio};
+use std::process::{Command/*, Stdio*/};
 use std::path::PathBuf;
 use std::io;
 use rfd::FileDialog;
-use iced::widget::{button, column, text, Column};
+use iced::widget::{/*button, column, text, */Column};
 
-
+const Availible_files_ext: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
 fn main() -> iced::Result {
 
 
@@ -15,7 +15,7 @@ fn main() -> iced::Result {
 	let files: Vec<PathBuf> = output_user;
 	println!("{:?}", files);
 	let mut u_input_task = String::new();
-	println!("Select file type (webm/mp4/mkv/mov/avi/ogg/raw): ");
+	println!("Select file type ({:?}): ", Availible_files_ext);
 	io::stdin()
 		.read_line(&mut u_input_task)
 		.expect("Ничего не введено");
@@ -25,7 +25,7 @@ fn main() -> iced::Result {
 		let file0name2: String = format!("{}.{}", file0name, task);
 		Command::new("ffmpeg")
 			.arg("-y")
-			.arg("-loglevel").arg("quiet")
+			//.arg("-loglevel").arg("quiet")
 			.arg("-threads").arg("0")
 			.arg("-i").arg(&file)
 			.arg(file0name2)
@@ -64,11 +64,13 @@ impl Converter {
     }
 
     fn view(&self) -> Column<'_, Message> {
-        column![
-            button("+").on_press(Message::Increment),
-            text(self.value),
-            button("-").on_press(Message::Decrement),
-        ]
+		pick_list(
+		    EXTENSIONS,
+		    self.target_ext.as_deref(),
+		    Message::ExtensionSelected,
+		)
+		.placeholder("Выберите формат...")
+		.width(150)
     }
 }
 
