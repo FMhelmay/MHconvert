@@ -36,6 +36,7 @@ impl Counter {
 					.set_directory("/")
 					.pick_files()
 					.unwrap_or_default();
+				println!("{:?}", self.selected_files);
         	}
             Message::ExtSelected(ext) => {
                 println!("{}",ext);
