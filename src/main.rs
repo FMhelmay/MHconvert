@@ -55,7 +55,6 @@ impl Counter {
         		self.selected_ext,
 				Message::ExtSelected)
 				.placeholder("Выберите расширение")
-				.into()
 		]
 	}
 
