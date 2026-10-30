@@ -1,10 +1,10 @@
 use std::path::PathBuf;
 use rfd::FileDialog;
-use iced::widget::{button/*, pick_list*/};
+use iced::widget::{button, /*pick_list, */column, Column};
 use iced::Element;
 
 
-const Availible_files_ext: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
+const Available_files_ext: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
 
 
 pub fn main() -> iced::Result {
@@ -41,13 +41,18 @@ impl Counter {
                 println!("{}",ext);
                 self.selected_ext = Some(ext);
 			}
+			Message::FilesSelected(_) => {
+				
+			}
 		}
 	}
 
-    fn view(&self) -> Element<Message> {
-    	button("Выбрать файлы").on_press(Message::SelectFiles)
+    fn view(&self) -> Column<'_, Message> {
+    	column![
+    		button("Выбрать файлы").on_press(Message::SelectFiles)
+    	]
 		/*pick_list(
-        	Availible_files_ext,
+        	Available_files_ext,
         	self.selected_ext,
         	Message::ExtSelected)
         	.placeholder("Выберите расширение")
