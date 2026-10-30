@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 use rfd::FileDialog;
-use iced::widget::{button, /*pick_list, */column, Column};
+use iced::widget::{button, pick_list, column, Column};
 use iced::Element;
 
 
@@ -47,17 +47,16 @@ impl Counter {
 		}
 	}
 
-    fn view(&self) -> Column<'_, Message> {
+	fn view(&self) -> Column<'_, Message> {
     	column![
-    		button("Выбрать файлы").on_press(Message::SelectFiles)
-    	]
-		/*pick_list(
-        	Available_files_ext,
-        	self.selected_ext,
-        	Message::ExtSelected)
-        	.placeholder("Выберите расширение")
-        	.into()
-        */
+    		button("Выбрать файлы").on_press(Message::SelectFiles),
+    		pick_list(
+        		Available_files_ext,
+        		self.selected_ext,
+				Message::ExtSelected)
+				.placeholder("Выберите расширение")
+				.into()
+		]
 	}
 
 }
