@@ -25,7 +25,7 @@ enum Message {
 	SelectFiles,
 	FilesSelected(Vec<PathBuf>),
 	ExtSelected(&'static str),
-	CheckboxFile0Toggled(bool)
+	CheckboxFileToggled(bool)
 }
 
 
@@ -45,7 +45,7 @@ impl MHconvert {
                 self.selected_ext = Some(ext);
 			}
 			Message::FilesSelected(_) => {}
-			Message::CheckboxFile0Toggled(is_toggled) => {
+			Message::CheckboxFileToggled(is_toggled) => {
 				self.is_file_selected = is_toggled;
 			}
 		}
@@ -61,15 +61,17 @@ impl MHconvert {
 				.placeholder("Выберите расширение")
 		];
 		let file_check = row![
-			if self.selected_files.first().is_some() {
-            	checkbox(self.is_file_selected)
-            		.label(self.selected_files[0].to_string_lossy())
-            	    .on_toggle(Message::CheckboxFile0Toggled)
-			}
-			else {
-				checkbox(self.is_file_selected)
-					.label("Файлы не выбраны")
-			}
+			for file in self.selected_files {
+				if file.is_some() {
+            		checkbox(self.is_file_selected)
+            			.label(file)
+            		    .on_toggle(Message::CheckboxFileToggled)
+				}
+				else {
+					checkbox(self.is_file_selected)
+						.label("Файлы не выбраны")
+				}
+			};
 		];
 		column![
 			btn_picklist,
