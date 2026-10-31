@@ -4,7 +4,7 @@ use iced::widget::{button, pick_list, column, Column};
 use iced::Element;
 
 
-const Available_files_ext: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
+const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
 
 
 pub fn main() -> iced::Result {
@@ -32,7 +32,7 @@ impl Counter {
         match message{
         	Message::SelectFiles => {
         		self.selected_files = FileDialog::new()
-					.add_filter("Видеофайл", &["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"])
+					.add_filter("Видеофайл", &AVAILABLE_FILES_EXT)
 					.set_directory("/")
 					.pick_files()
 					.unwrap_or_default();
@@ -42,8 +42,9 @@ impl Counter {
                 println!("{}",ext);
                 self.selected_ext = Some(ext);
 			}
-			Message::FilesSelected(_) => {
-				
+			Message::FilesSelected(files) => {
+				println!("{:?}", files);
+				println!("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAaaaa");	
 			}
 		}
 	}
@@ -52,7 +53,7 @@ impl Counter {
     	column![
     		button("Выбрать файлы").on_press(Message::SelectFiles),
     		pick_list(
-        		Available_files_ext,
+        		AVAILABLE_FILES_EXT,
         		self.selected_ext,
 				Message::ExtSelected)
 				.placeholder("Выберите расширение")
