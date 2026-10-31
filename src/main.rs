@@ -46,7 +46,7 @@ impl MHconvert {
 			}
 			Message::FilesSelected(_) => {}
 			Message::CheckboxFile0Toggled(is_toggled) => {
-				self.is_file_selected = is_toggled
+				self.is_file_selected = is_toggled;
 			}
 		}
 	}
