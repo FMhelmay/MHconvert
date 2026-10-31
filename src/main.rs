@@ -62,16 +62,10 @@ impl MHconvert {
 		];
 		let file_check = row![
 			for file in self.selected_files {
-				if file.is_some() {
-            		checkbox(self.is_file_selected)
-            			.label(file)
-            		    .on_toggle(Message::CheckboxFileToggled)
-				}
-				else {
-					checkbox(self.is_file_selected)
-						.label("Файлы не выбраны")
-				}
-			};
+            	checkbox(self.is_file_selected)
+					.label(file.to_string_lossy())
+					.on_toggle(Message::CheckboxFileToggled)
+			}
 		];
 		column![
 			btn_picklist,
