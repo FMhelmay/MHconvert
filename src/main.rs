@@ -45,7 +45,9 @@ impl MHconvert {
                 self.selected_ext = Some(ext);
 			}
 			Message::FilesSelected(_) => {}
-			Message::CheckboxFile0Toggled(_) => {}
+			Message::CheckboxFile0Toggled(is_toggled) => {
+				self.is_file_selected = is_toggled
+			}
 		}
 	}
 
