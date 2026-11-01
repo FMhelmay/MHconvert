@@ -46,6 +46,7 @@ impl MHconvert {
         		for (file_index, file_path) in self.selected_files.iter().enumerate() {
         			if self.active_files[file_index] {
         				println!("{:?}", file_path);
+        				println!("-------------------\n{}.{}", file_path.file_stem(), self.selected_ext));
         				Command::new("ffmpeg")
 							.arg("-y")
 	    					.arg("-loglevel").arg("quiet")
