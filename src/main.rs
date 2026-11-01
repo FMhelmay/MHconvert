@@ -40,13 +40,14 @@ impl MHconvert {
 					.set_directory("/")
 					.pick_files()
 					.unwrap_or_default();
-				self.active_files = vec![false; self.selected_files.len()];
+				self.active_files = vec![true; self.selected_files.len()];
         	}
         	Message::RunConvert => {
         		for (file_index, file_path) in self.selected_files.iter().enumerate() {
         			if self.active_files[file_index] {
         				println!("{:?}", file_path);
         				let file2: &str = file_path.file_stem().and_then(|s| s.to_str()).unwrap_or("error1");
+        				println!("{}.{:?}", file2, self.selected_ext);
         				Command::new("ffmpeg")
 							.arg("-y")
 	    					.arg("-loglevel").arg("quiet")
