@@ -38,7 +38,7 @@ impl MHconvert {
 					.set_directory("/")
 					.pick_files()
 					.unwrap_or_default();
-				println!("{:?}", self.selected_files);
+				self.active_files = vec![false; self.selected_files.len()];
         	}
             Message::ExtSelected(ext) => {
                 println!("{}",ext);
