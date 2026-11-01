@@ -63,7 +63,7 @@ impl MHconvert {
             	.unwrap_or(&false))
 						.label(file_path.to_string_lossy())
 						.on_toggle(move | is_selected | Message::CheckboxFileToggled(file_index, is_selected))
-				).padding(10);
+				).spacing(10);
 			}
 		row![btn_picklist, file_check]
 	}
