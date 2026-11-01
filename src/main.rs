@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+57362uuse std::path::PathBuf;
 use rfd::FileDialog;
 use iced::widget::{button, pick_list, checkbox};
 use iced::widget::{column, row};
@@ -25,7 +25,7 @@ struct MHconvert {
 enum Message {
 	SelectFiles,
 	ExtSelected(&'static str),
-	CheckboxFileToggled(&'static PathBuf)
+	CheckboxFileToggled(usize, bool)
 }
 
 
@@ -44,8 +44,8 @@ impl MHconvert {
                 println!("{}",ext);
                 self.selected_ext = Some(ext);
 			}
-			Message::CheckboxFileToggled(file) => {
-				self.active_files[file] = true;
+			Message::CheckboxFileToggled(index, is_selected) => {
+				self.active_files[index] = is_selected;
 			}
 		}
 	}
@@ -60,10 +60,14 @@ impl MHconvert {
 				.placeholder("Выберите расширение")
 		];
 		let mut file_check = column![];
-			for file in &self.selected_files {
-            	file_check = file_check.push(checkbox(&self.active_files[file])
-					.label(file.to_string_lossy())
-					.on_toggle(Message::CheckboxFileToggled(file))
+			for (file_index, file_path) in self.selected_files.iter().enumerate() {
+            	file_check = file_check.push(
+            	checkbox(
+            	self.active_files
+            	.get(file_index)
+            	.unwrap_or(false))
+						.label(file_path.to_string_lossy())
+						.on_toggle(Message::CheckboxFileToggled(file_index, file_path))
 				);
 			}
 		row![
@@ -71,5 +75,4 @@ impl MHconvert {
 			file_check
 		]
 	}
-
 }
