@@ -54,8 +54,8 @@ impl MHconvert {
 							.arg("-threads").arg("0")
 							.arg("-i").arg(file_path)
 							.arg(format!("{}.{}", file2, self.selected_ext.unwrap_or("error2")))
-							.stdout(Stdio::null())
-							.stderr(Stdio::null())
+							//.stdout(Stdio::null())
+							//.stderr(Stdio::null())
 							.status()
 							.expect("Не удалось запустить процесс");
         			}
