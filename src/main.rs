@@ -1,3 +1,4 @@
+use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use rfd::FileDialog;
 use iced::widget::{button, pick_list, checkbox};
@@ -45,6 +46,16 @@ impl MHconvert {
         		for (file_index, file_path) in self.selected_files.iter().enumerate() {
         			if self.active_files[file_index] {
         				println!("{:?}", file_path);
+        				Command::new("ffmpeg")
+							.arg("-y")
+	    					.arg("-loglevel").arg("quiet")
+							.arg("-threads").arg("0")
+							.arg("-i").arg(file_path)
+							.arg(format!("{:?}.{:?}", file_path.file_stem(), self.selected_ext))
+							.stdout(Stdio::null())
+							.stderr(Stdio::null())
+							.status()
+							.expect("Не удалось запустить процесс");
         			}
         		}
         	}
