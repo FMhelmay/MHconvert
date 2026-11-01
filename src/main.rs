@@ -46,13 +46,13 @@ impl MHconvert {
         		for (file_index, file_path) in self.selected_files.iter().enumerate() {
         			if self.active_files[file_index] {
         				println!("{:?}", file_path);
-        				println!("-------------------\n{:?}.{:?}", file_path.file_stem(), self.selected_ext);
+        				let file2: &str = file_path.file_stem().and_then(|s| s.to_str()).unwrap_or("error1");
         				Command::new("ffmpeg")
 							.arg("-y")
 	    					.arg("-loglevel").arg("quiet")
 							.arg("-threads").arg("0")
 							.arg("-i").arg(file_path)
-							.arg(format!("{:?}.{:?}", file_path.file_stem(), self.selected_ext))
+							.arg(format!("{}.{:?}", file2, self.selected_ext))
 							.stdout(Stdio::null())
 							.stderr(Stdio::null())
 							.status()
