@@ -18,15 +18,14 @@ pub fn main() -> iced::Result {
 struct MHconvert {
 	selected_ext: Option<&'static str>,
 	selected_files: Vec<PathBuf>,
-	is_file_selected: bool
+	active_files: Vec<bool>
 }
 
 #[derive(Debug, Clone)]
 enum Message {
 	SelectFiles,
-	FilesSelected(Vec<PathBuf>),
 	ExtSelected(&'static str),
-	CheckboxFileToggled(bool)
+	CheckboxFileToggled(&'static PathBuf)
 }
 
 
@@ -45,9 +44,8 @@ impl MHconvert {
                 println!("{}",ext);
                 self.selected_ext = Some(ext);
 			}
-			Message::FilesSelected(_) => {}
-			Message::CheckboxFileToggled(is_toggled) => {
-				self.is_file_selected = is_toggled;
+			Message::CheckboxFileToggled(file) => {
+				self.active_files[file] = true;
 			}
 		}
 	}
@@ -63,9 +61,9 @@ impl MHconvert {
 		];
 		let mut file_check = column![];
 			for file in &self.selected_files {
-            	file_check = file_check.push(checkbox(self.is_file_selected)
+            	file_check = file_check.push(checkbox(&self.active_files[file])
 					.label(file.to_string_lossy())
-					.on_toggle(Message::CheckboxFileToggled)
+					.on_toggle(Message::CheckboxFileToggled(file))
 				);
 			}
 		row![
