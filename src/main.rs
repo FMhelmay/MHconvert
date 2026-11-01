@@ -52,12 +52,12 @@ impl MHconvert {
         				println!("{:?}", file2);
         				Command::new("ffmpeg")
 							.arg("-y")
-	    					//.arg("-loglevel").arg("quiet")
+	    					.arg("-loglevel").arg("quiet")
 							.arg("-threads").arg("0")
 							.arg("-i").arg(file_path)
 							.arg(file2)
-							//.stdout(Stdio::null())
-							//.stderr(Stdio::null())
+							.stdout(Stdio::null())
+							.stderr(Stdio::null())
 							.status()
 							.expect("Не удалось запустить процесс");
         			}
