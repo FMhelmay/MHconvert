@@ -60,13 +60,12 @@ impl MHconvert {
 				Message::ExtSelected)
 				.placeholder("Выберите расширение")
 		];
-		let file_check = row![
+		let file_check = row![];
 			for file in self.selected_files {
             	checkbox(self.is_file_selected)
 					.label(file.to_string_lossy())
 					.on_toggle(Message::CheckboxFileToggled)
 			}
-		];
 		column![
 			btn_picklist,
 			file_check
