@@ -1,8 +1,9 @@
 use std::path::PathBuf;
 use rfd::FileDialog;
-use iced::widget::{button, pick_list, checkbox, text};
-use iced::widget::{column, row, Column};
-//use iced::Element;
+use iced::widget::{button, pick_list, checkbox};
+use iced::widget::{column, row};
+use iced::widget::Row;
+//use iced::widget::Column;
 
 
 const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
@@ -51,7 +52,7 @@ impl MHconvert {
 		}
 	}
 
-	fn view(&self) -> Column<'_, Message> {
+	fn view(&self) -> Row<'_, Message> {
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(Message::SelectFiles),
     		pick_list(
@@ -60,14 +61,14 @@ impl MHconvert {
 				Message::ExtSelected)
 				.placeholder("Выберите расширение")
 		];
-		let mut file_check = row![];
+		let mut file_check = column![];
 			for file in &self.selected_files {
             	file_check = file_check.push(checkbox(self.is_file_selected)
 					.label(file.to_string_lossy())
 					.on_toggle(Message::CheckboxFileToggled)
 				);
 			}
-		column![
+		row![
 			btn_picklist,
 			file_check
 		]
