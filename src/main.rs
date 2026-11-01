@@ -67,7 +67,7 @@ impl MHconvert {
             	.get(file_index)
             	.unwrap_or(&false))
 						.label(file_path.to_string_lossy())
-						.on_toggle(Message::CheckboxFileToggled(file_index, self.active_files[file_index]))
+						.on_toggle(move | is_selected | Message::CheckboxFileToggled(file_index, is_selected))
 				);
 			}
 		row![
