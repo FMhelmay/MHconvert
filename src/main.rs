@@ -6,7 +6,7 @@ use iced::widget::Row;
 //use iced::widget::Column;
 
 
-const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "raw"];
+const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
 
 
 pub fn main() -> iced::Result {
@@ -23,6 +23,7 @@ struct MHconvert {
 
 #[derive(Debug, Clone)]
 enum Message {
+	RunConvert,
 	SelectFiles,
 	ExtSelected(&'static str),
 	CheckboxFileToggled(usize, bool)
@@ -40,6 +41,11 @@ impl MHconvert {
 					.unwrap_or_default();
 				self.active_files = vec![false; self.selected_files.len()];
         	}
+        	Message::RunConvert => {
+        		for file_index in &self.active_files {
+        			println!("Запускаю конвертацию файла {}", file_index);
+        		}
+        	}
             Message::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			Message::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
 		}
@@ -52,7 +58,8 @@ impl MHconvert {
         		AVAILABLE_FILES_EXT,
         		self.selected_ext,
 				Message::ExtSelected)
-				.placeholder("Выберите расширение")
+				.placeholder("Выберите расширение"),
+			button("Конвертать").on_press(Message::RunConvert)
 		];
 		let mut file_check = column![];
 			for (file_index, file_path) in self.selected_files.iter().enumerate() {
