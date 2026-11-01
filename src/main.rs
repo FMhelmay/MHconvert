@@ -40,13 +40,8 @@ impl MHconvert {
 					.unwrap_or_default();
 				self.active_files = vec![false; self.selected_files.len()];
         	}
-            Message::ExtSelected(ext) => {
-                println!("{}",ext);
-                self.selected_ext = Some(ext);
-			}
-			Message::CheckboxFileToggled(index, is_selected) => {
-				self.active_files[index] = is_selected;
-			}
+            Message::ExtSelected(ext) => {self.selected_ext = Some(ext);}
+			Message::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
 		}
 	}
 
@@ -68,11 +63,8 @@ impl MHconvert {
             	.unwrap_or(&false))
 						.label(file_path.to_string_lossy())
 						.on_toggle(move | is_selected | Message::CheckboxFileToggled(file_index, is_selected))
-				);
+				).padding(10);
 			}
-		row![
-			btn_picklist,
-			file_check
-		]
+		row![btn_picklist, file_check]
 	}
 }
