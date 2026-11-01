@@ -42,8 +42,8 @@ impl MHconvert {
 				self.active_files = vec![false; self.selected_files.len()];
         	}
         	Message::RunConvert => {
-        		for file_index in &self.active_files {
-        			println!("Запускаю конвертацию файла {}", file_index);
+        		for (a,b) in self.active_files.iter().enumerate() {
+        			println!("Запускаю конвертацию файла {}, {}", a,b);
         		}
         	}
             Message::ExtSelected(ext) => {self.selected_ext = Some(ext);}
