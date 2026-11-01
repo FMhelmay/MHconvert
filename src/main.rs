@@ -46,7 +46,6 @@ impl MHconvert {
         			if self.active_files[file_index] {
         				println!("{:?}", file_path);
         			}
-        			//println!("Запускаю конвертацию файла {}, {:?}", file_index, file_path);
         		}
         	}
             Message::ExtSelected(ext) => {self.selected_ext = Some(ext);}
