@@ -43,7 +43,9 @@ impl MHconvert {
         	}
         	Message::RunConvert => {
         		for (file_index, file_path) in self.selected_files.iter().enumerate() {
-        			println!("{}", self.active_files[file_index]);
+        			if self.active_files[file_index] {
+        				println!("{:?}", file_path);
+        			}
         			//println!("Запускаю конвертацию файла {}, {:?}", file_index, file_path);
         		}
         	}
