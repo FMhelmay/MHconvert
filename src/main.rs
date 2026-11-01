@@ -1,4 +1,4 @@
-57362uuse std::path::PathBuf;
+use std::path::PathBuf;
 use rfd::FileDialog;
 use iced::widget::{button, pick_list, checkbox};
 use iced::widget::{column, row};
@@ -63,9 +63,9 @@ impl MHconvert {
 			for (file_index, file_path) in self.selected_files.iter().enumerate() {
             	file_check = file_check.push(
             	checkbox(
-            	self.active_files
+            	*self.active_files
             	.get(file_index)
-            	.unwrap_or(false))
+            	.unwrap_or(&false))
 						.label(file_path.to_string_lossy())
 						.on_toggle(Message::CheckboxFileToggled(file_index, file_path))
 				);
