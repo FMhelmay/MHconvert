@@ -19,7 +19,8 @@ pub fn main() -> iced::Result {
 struct MHconvert {
 	selected_ext: Option<&'static str>,
 	selected_files: Vec<PathBuf>,
-	active_files: Vec<bool>
+	active_files: Vec<bool>,
+	is_allowed_convert: bool
 }
 
 #[derive(Debug, Clone)]
@@ -76,7 +77,7 @@ impl MHconvert {
         		self.selected_ext,
 				Message::ExtSelected)
 				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press_maybe(self.selected_ext.map(|_| Message::RunConvert))
+			button("Конвертать").on_press_maybe(if self.is_allowed_convert {Some(Message::RunConvert)} else {None})
 		];
 		let mut file_check = column![];
 			for (file_index, file_path) in self.selected_files.iter().enumerate() {
