@@ -76,7 +76,7 @@ impl MHconvert {
         		self.selected_ext,
 				Message::ExtSelected)
 				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press(Message::RunConvert)
+			button("Конвертать").on_press_maybe(self.selected_ext.map(|_| Message::RunConvert))
 		];
 		let mut file_check = column![];
 			for (file_index, file_path) in self.selected_files.iter().enumerate() {
