@@ -69,7 +69,7 @@ impl MHconvert {
 	}
 
 	fn view(&self) -> Row<'_, Message> {
-    	let is_allowed_convert: bool = self.selected_ext.is_some();
+    	let is_allowed_convert: bool = self.selected_ext.is_some() && self.active_files.contains(&true);
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(Message::SelectFiles),
     		pick_list(
