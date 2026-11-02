@@ -70,7 +70,7 @@ impl MHconvert {
 
 	fn view(&self) -> Row<'_, Message> {
     	let btn_picklist = column![
-    		button("Выбрать файлы").on_press(Message::SelectFiles),
+    		button("Выбрать файлы").on_press_maybe(None),
     		pick_list(
         		AVAILABLE_FILES_EXT,
         		self.selected_ext,
