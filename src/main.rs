@@ -21,11 +21,11 @@ fn check_ffmpeg() -> bool {
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
 pub fn main() -> iced::Result {
+    let ffmpeg_error = "В вашей системе не обнаружен ffmpeg. Вы можете проверить PATH или скачать его на ffmpeg.org";
 	if check_ffmpeg() {
     	iced::run(MHconvert::update, MHconvert::view)}
     else {
-    	println!("В вашей системе не обнаружен ffmpeg. Вы можете проверить PATH или скачать его на ffmpeg.org");
-    	std::process::exit(1);
+    	iced::run(MHconvert::updateNo_ffmpeg, MHconvert::viewNo_ffmpeg)
     }
 }
 
@@ -47,6 +47,13 @@ enum Message {
 
 
 impl MHconvert {
+	fn updateNo_ffmpeg(&mut self, message: MessageNO_FFMPEG) {
+		match message_no_ffmpeg {
+			MessageNO_FFMPEG::CloseWindow => {
+				std::process::exit(0);
+			}
+		}
+	}
     fn update(&mut self, message: Message) {
         match message{
         	Message::SelectFiles => {
@@ -82,7 +89,7 @@ impl MHconvert {
 			Message::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
 		}
 	}
-
+	fn viewNo_ffmpeg(&self) -> 
 	fn view(&self) -> Row<'_, Message> {
     	let is_allowed_convert: bool = self.selected_ext.is_some() && self.active_files.contains(&true);
     	let btn_picklist = column![
