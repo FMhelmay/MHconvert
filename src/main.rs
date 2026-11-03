@@ -4,7 +4,6 @@ use rfd::FileDialog;
 use iced::widget::{button, pick_list, checkbox};
 use iced::widget::{column, row};
 use iced::widget::Row;
-//use iced::widget::Column;
 
 
 const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
