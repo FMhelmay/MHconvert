@@ -68,7 +68,7 @@ impl NoticeWindow {
         self.title.clone()
     }
 
-    fn updateNo_ffmpeg(&mut self, message: Message) {
+    fn update(&mut self, message: Message) {
         match message {
             Message::CloseWindow => {
                 std::process::exit(0);
@@ -76,7 +76,7 @@ impl NoticeWindow {
         }
     }
 
-    fn viewNo_ffmpeg(&self) -> Element<'_, Message> {
+    fn view(&self) -> Element<'_, Message> {
         let content = column![
             text(&self.text).align_x(Center),
             button(text(&self.button_text))
@@ -101,8 +101,8 @@ fn show_notice(title: &str, message: &str, button_text: &str) -> iced::Result {
             text: message.clone(),
             button_text: button_text.clone(),
         },
-        NoticeWindow::updateNo_ffmpeg,
-        NoticeWindow::viewNo_ffmpeg,
+        NoticeWindow::update,
+        NoticeWindow::view,
     )
     .title(NoticeWindow::title)
     .window_size((650.0, 350.0))
