@@ -5,12 +5,28 @@ use iced::widget::{button, pick_list, checkbox};
 use iced::widget::{column, row};
 use iced::widget::Row;
 
-
 const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
 
 
+struct FileItem {
+	path: PathBuf,
+	is_active: bool,
+	status: FileStatus
+}
+
+enum FileStatus {
+	Waiting, Done, Error, None
+}
+fn check_ffmpeg() -> bool {
+	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
+}
 pub fn main() -> iced::Result {
-    iced::run(MHconvert::update, MHconvert::view)
+	if check_ffmpeg() {
+    	iced::run(MHconvert::update, MHconvert::view)}
+    else {
+    	println!("В вашей системе не обнаружен ffmpeg. Вы можете проверить PATH или скачать его на ffmpeg.org");
+    	std::process::exit(1);
+    }
 }
 
 
