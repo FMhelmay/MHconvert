@@ -1,7 +1,7 @@
 use iced::widget::{text, button};
 use iced::widget::{Column, column};
 
-
+#[derive](Clone)]
 enum Message {
 	CloseWindow
 }
@@ -13,10 +13,15 @@ pub fn draw_main_window(window_name: &str) {
 
 pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
 	println!("GUI,DRAW_ERROR_WINDOW: создано окно {}, оно извещает следующее: {}. {}", window_name, window_text, window_button_text);
-	iced::run(MHconvertErrorState::update, MHconvertErrorState::view)
+	let state = MHconvertErrorState {window_name: window_name.to_string(), window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
+	iced::application(
+		move || state.clone(),
+			MHconvertErrorState::update,
+			MHconvertErrorState::view
+	).run()
 }
 
-//#[derive(Default, Clone)]
+#[derive(Clone)]
 struct MHconvertErrorState {
 	window_name: String,
 	window_text: String,
@@ -33,8 +38,8 @@ impl MHconvertErrorState {
 		}
 	}
 	fn view(&self) -> Column<'_, Message> {
-		let window_text = text(&self.window_text);
-		let window_button = button(&self.window_button_text).on_press(Message::CloseWindow);
-		column![window_text, window_button]
+		let element_window_text = text(self.window_text);
+		let element_window_button = button(text(self.window_button_text)).on_press(Message::CloseWindow);
+		column![element_window_text, element_window_button]
 	}
 }
