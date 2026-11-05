@@ -4,7 +4,7 @@ mod run_convert;
 mod gui;
 
 
-fn main() {
+fn main() -> iced::Result {
 	if Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false) {
 		gui::draw_error_window(
 			"MHconvert",
