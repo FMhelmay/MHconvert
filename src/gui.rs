@@ -1,7 +1,7 @@
 use iced::widget::{text, button};
 use iced::widget::{Column, column};
 
-#[derive](Clone)]
+#[derive(Clone)]
 enum Message {
 	CloseWindow
 }
@@ -38,8 +38,8 @@ impl MHconvertErrorState {
 		}
 	}
 	fn view(&self) -> Column<'_, Message> {
-		let element_window_text = text(self.window_text);
-		let element_window_button = button(text(self.window_button_text)).on_press(Message::CloseWindow);
+		let element_window_text = text(&self.window_text);
+		let element_window_button = button(text(&self.window_button_text)).on_press(Message::CloseWindow);
 		column![element_window_text, element_window_button]
 	}
 }
