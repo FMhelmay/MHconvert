@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use rfd::FileDialog;
 
 use iced::widget::{container, text, button, pick_list, checkbox};
-use iced::widget::{Container, Column, Row, column, row};
+use iced::widget::{Container, Column, Row, center, column, row};
 use iced::Fill;
 use crate::logic;
 
@@ -126,6 +126,6 @@ impl MHconvertMainState {
 						.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 				).spacing(5);
 			}
-		container(row![btn_picklist, file_check]).center(Fill)
+		center(container(row![btn_picklist, file_check]))
 	}
 }
