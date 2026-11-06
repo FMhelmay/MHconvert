@@ -3,8 +3,9 @@ use std::path::PathBuf;
 use rfd::FileDialog;
 
 use iced::widget::{text, button, pick_list, checkbox};
-use iced::widget::{Column, Row, row, column};
-
+use iced::widget::{Container, container, center};
+use iced::widget::{Column, column, Row, row};
+use iced::Fill;
 use crate::logic;
 
 
@@ -35,7 +36,11 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 		move || state.clone(),
 			MHconvertErrorState::update,
 			MHconvertErrorState::view
-	).run()
+	)
+	.window_size((500.0, 200.0))
+	.centered()
+	.resizable(false)
+	.run()
 }
 
 #[derive(Clone)]
@@ -60,10 +65,12 @@ impl MHconvertErrorState {
 			}
 		}
 	}
-	fn view(&self) -> Column<'_, ErrorMessage> {
+	fn view(&self) -> Container<'_, ErrorMessage> {
 		let element_window_text = text(&self.window_text);
 		let element_window_button = button(text(&self.window_button_text)).on_press(ErrorMessage::CloseWindow);
-		column![element_window_text, element_window_button]
+		center(column![element_window_text, element_window_button.width(Fill)].spacing(15)).padding(20)
+			.width(Fill)
+			.height(Fill)
 	}
 }
 
