@@ -13,7 +13,7 @@ fn main() -> iced::Result {
 		)
 	}
 	else {
-		gui::draw_main_window("MHconvert")
+		gui::draw_main_window()
 	}
 
 }

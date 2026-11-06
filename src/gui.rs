@@ -24,14 +24,8 @@ enum MainMessage {
 	CheckboxFileToggled(usize, bool)
 }
 
-pub fn draw_main_window(window_name: &str)  -> iced::Result {
-	println!("GUI,DRAW_MAIN_WINDOW: создано окно {}", window_name);
-	let state = MHconvertErrorState {window_name: window_name.to_string(), window_text: "Не указано".to_string(), window_button_text: "Не указано".to_string()};
-	iced::application(
-		move || state.clone(),
-			MHconvertErrorState::update,
-			MHconvertErrorState::view
-	).run()
+pub fn draw_main_window() -> iced::Result {
+	iced::run(MHconvertMainState::update, MHconvertMainState::view)
 }
 
 pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
