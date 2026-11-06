@@ -1,95 +1,20 @@
-use std::process::{Command, Stdio};
-use std::path::PathBuf;
-use rfd::FileDialog;
-use iced::widget::{button, pick_list, checkbox};
-use iced::widget::{column, row};
-use iced::widget::Row;
-//use iced::widget::Column;
+use std::process::Command;
+
+mod logic;
+mod gui;
 
 
-const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
-
-
-pub fn main() -> iced::Result {
-    iced::run(MHconvert::update, MHconvert::view)
-}
-
-
-#[derive(Default)]
-struct MHconvert {
-	selected_ext: Option<&'static str>,
-	selected_files: Vec<PathBuf>,
-	active_files: Vec<bool>
-}
-
-#[derive(Debug, Clone)]
-enum Message {
-	RunConvert,
-	SelectFiles,
-	ExtSelected(&'static str),
-	CheckboxFileToggled(usize, bool)
-}
-
-
-impl MHconvert {
-    fn update(&mut self, message: Message) {
-        match message{
-        	Message::SelectFiles => {
-        		self.selected_files = FileDialog::new()
-					.add_filter("Видеофайл", &AVAILABLE_FILES_EXT)
-					.set_directory("/")
-					.pick_files()
-					.unwrap_or_default();
-				self.active_files = vec![true; self.selected_files.len()];
-        	}
-        	Message::RunConvert => {
-        		for (file_index, file_path) in self.selected_files.iter().enumerate() {
-        			if self.active_files[file_index] {
-        				println!("{:?}", file_path);
-						let ext = self.selected_ext.unwrap_or("error");
-						let file2 = file_path.with_extension(ext);
-        				
-        				println!("{:?}", file2);
-        				Command::new("ffmpeg")
-							.arg("-y")
-	    					.arg("-loglevel").arg("quiet")
-							.arg("-threads").arg("0")
-							.arg("-i").arg(file_path)
-							.arg(file2)
-							.stdout(Stdio::null())
-							.stderr(Stdio::null())
-							.status()
-							.expect("Не удалось запустить процесс");
-        			}
-        		}
-        	}
-            Message::ExtSelected(ext) => {self.selected_ext = Some(ext);}
-			Message::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
-		}
+fn main() -> iced::Result {
+	if !Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false) {		
+		gui::draw_main_window()
+	}
+	else {
+		gui::draw_error_window(
+			"MHconvert",
+			"В вашей системе не обнаружен ffmpeg. Вы можете проверить PATH или скачать его на ffmpeg.org",
+			"Закрыть"
+		)
 	}
 
-	fn view(&self) -> Row<'_, Message> {
-    	let is_allowed_convert: bool = self.selected_ext.is_some() && self.active_files.contains(&true);
-    	let btn_picklist = column![
-    		button("Выбрать файлы").on_press(Message::SelectFiles),
-    		pick_list(
-        		AVAILABLE_FILES_EXT,
-        		self.selected_ext,
-				Message::ExtSelected)
-				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(Message::RunConvert)} else {None})
-		];
-		let mut file_check = column![];
-			for (file_index, file_path) in self.selected_files.iter().enumerate() {
-            	file_check = file_check.push(
-            	checkbox(
-            	*self.active_files
-            	.get(file_index)
-            	.unwrap_or(&false))
-						.label(file_path.to_string_lossy())
-						.on_toggle(move | is_selected | Message::CheckboxFileToggled(file_index, is_selected))
-				).spacing(5);
-			}
-		row![btn_picklist, file_check]
-	}
 }
+
