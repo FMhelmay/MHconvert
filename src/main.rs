@@ -1,6 +1,6 @@
 use std::process::Command;
 
-mod run_convert;
+mod logic;
 mod gui;
 
 

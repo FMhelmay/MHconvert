@@ -1,8 +1,10 @@
 use iced::widget::{text, button};
 use iced::widget::{Column, column};
 
+use crate::logic;
+
 #[derive(Clone)]
-enum Message {
+enum ErrorMessage {
 	CloseWindow
 }
 
@@ -36,16 +38,16 @@ struct MHconvertErrorState {
 
 
 impl MHconvertErrorState {
-	fn update(&mut self, message: Message) {
+	fn update(&mut self, message: ErrorMessage) {
 		match message{
-			Message::CloseWindow => {
+			ErrorMessage::CloseWindow => {
 				std::process::exit(0)
 			}
 		}
 	}
-	fn view(&self) -> Column<'_, Message> {
+	fn view(&self) -> Column<'_, ErrorMessage> {
 		let element_window_text = text(&self.window_text);
-		let element_window_button = button(text(&self.window_button_text)).on_press(Message::CloseWindow);
+		let element_window_button = button(text(&self.window_button_text)).on_press(ErrorMessage::CloseWindow);
 		column![element_window_text, element_window_button]
 	}
 }
