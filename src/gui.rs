@@ -127,5 +127,8 @@ impl MHconvertMainState {
 				).spacing(5);
 			}
 		center(row![btn_picklist, file_check])
+			.width(Fill)
+			.height(Fill)
+			.into()
 	}
 }
