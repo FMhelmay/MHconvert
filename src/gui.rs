@@ -2,9 +2,9 @@ use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use rfd::FileDialog;
 
-use iced::widget::{text, button, pick_list, checkbox};
-use iced::widget::{Column, Row, row, column};
-
+use iced::widget::{container, text, button, pick_list, checkbox};
+use iced::widget::{Container, Column, Row, column, row};
+use iced::Fill;
 use crate::logic;
 
 
@@ -104,7 +104,7 @@ impl MHconvertMainState {
 		}
 	}
 
-	fn view(&self) -> Row<'_, MainMessage> {
+	fn view(&self) -> Container<'_, MainMessage> {
     	let is_allowed_convert: bool = self.selected_ext.is_some() && self.active_files.contains(&true);
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(MainMessage::SelectFiles),
@@ -126,6 +126,6 @@ impl MHconvertMainState {
 						.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 				).spacing(5);
 			}
-		row![btn_picklist, file_check]
+		container(row![btn_picklist, file_check]).center(Fill)
 	}
 }
