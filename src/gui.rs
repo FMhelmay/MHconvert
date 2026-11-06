@@ -126,6 +126,6 @@ impl MHconvertMainState {
 						.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 				).spacing(5);
 			}
-		center(container(row![btn_picklist, file_check]))
+		center(row![btn_picklist, file_check])
 	}
 }
