@@ -69,6 +69,7 @@ impl MHconvertErrorState {
 			}
 		}
 	}
+
 	fn view(&self) -> Container<'_, ErrorMessage> {
 		let element_window_text = text(&self.window_text);
 		let element_window_button = button(text(&self.window_button_text)).on_press(ErrorMessage::CloseWindow);
@@ -95,7 +96,7 @@ impl MHconvertMainState {
         				println!("{:?}", file_path);
 						let ext = self.selected_ext.unwrap_or("error");
 						let file2 = file_path.with_extension(ext);
-        				
+
         				println!("{:?}", file2);
         				Command::new("ffmpeg")
 							.arg("-y")
@@ -138,5 +139,6 @@ impl MHconvertMainState {
 				).spacing(5);
 			}
 		row![btn_picklist, file_check]
+
 	}
 }
