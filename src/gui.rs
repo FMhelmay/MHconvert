@@ -1,5 +1,4 @@
 use std::path::PathBuf;
-use rfd::FileDialog;
 
 use iced::widget::{text, button, pick_list, checkbox};
 use iced::widget::{Container, container, center};
@@ -35,7 +34,7 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 			MHconvertErrorState::view
 	)
 	.title(MHconvertErrorState::get_title)
-	.window_size((500.0, 200.0))
+	.window_size((500.0, 150.0))
 	.centered()
 	.resizable(false)
 	.run()
@@ -71,8 +70,13 @@ impl MHconvertErrorState {
 
 	fn view(&self) -> Container<'_, ErrorMessage> {
 		let element_window_text = text(&self.window_text);
-		let element_window_button = button(text(&self.window_button_text)).on_press(ErrorMessage::CloseWindow);
-		center(column![element_window_text, element_window_button.width(Fill)].spacing(15)).padding(20)
+		let element_window_button = button(text(&self.window_button_text).width(Fill).center()).on_press(ErrorMessage::CloseWindow);
+		center(column![
+				element_window_text.width(Fill).height(Fill), 
+				row![text("").width(Fill), text("").width(Fill), text("").width(Fill), text("").width(Fill),
+				element_window_button.width(Fill)]]
+			.spacing(15))
+			.padding(20)
 			.width(Fill)
 			.height(Fill)
 	}
@@ -81,7 +85,9 @@ impl MHconvertErrorState {
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
-        	MainMessage::SelectFiles => {logic::select_files();}
+        	MainMessage::SelectFiles => {
+				(self.selected_files, self.active_files) = logic::select_files();
+        	}
         	MainMessage::RunConvert => {
         		logic::run_convert(
         			&self.selected_ext,
