@@ -27,7 +27,7 @@ pub fn draw_main_window() -> iced::Result {
 	iced::run(MHconvertMainState::update, MHconvertMainState::view)
 }
 
-pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
+pub fn draw_error_window(/*window_name: &str, */window_text: &str, window_button_text: &str) -> iced::Result {
 	let state = MHconvertErrorState {/*window_name: window_name.to_string(), */window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
 	iced::application(
 		move || state.clone(),
@@ -77,20 +77,13 @@ impl MHconvertErrorState {
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
-        	MainMessage::SelectFiles => {
-        		self.selected_files = FileDialog::new()
-					.add_filter("Видеофайл", &logic::AVAILABLE_FILES_EXT)
-					.set_directory("/")
-					.pick_files()
-					.unwrap_or_default();
-				self.active_files = vec![true; self.selected_files.len()];
-        	}
+        	MainMessage::SelectFiles => {logic::select_files();}
         	MainMessage::RunConvert => {
         		logic::run_convert(
         			&self.selected_ext,
         			&self.active_files.clone(),
         			&self.selected_files.clone()
-        		)
+        		);
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
