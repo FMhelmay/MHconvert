@@ -26,6 +26,7 @@ enum MainMessage {
 	CheckboxFileToggled(usize, bool)
 }
 
+
 pub fn draw_main_window() -> iced::Result {
 	iced::run(MHconvertMainState::update, MHconvertMainState::view)
 }
@@ -44,6 +45,7 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 	.run()
 }
 
+
 #[derive(Clone)]
 struct MHconvertErrorState {
 	window_name: String,
@@ -58,6 +60,7 @@ struct MHconvertMainState {
 	active_files: Vec<bool>
 }
 
+// == == == == ERROR WINDOW
 impl MHconvertErrorState {
 	fn update(&mut self, message: ErrorMessage) {
 		match message{
@@ -74,7 +77,7 @@ impl MHconvertErrorState {
 			.height(Fill)
 	}
 }
-
+// == == == == MAIN WINDOW
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
