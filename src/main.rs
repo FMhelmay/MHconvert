@@ -5,7 +5,7 @@ mod gui;
 
 
 fn main() -> iced::Result {
-	if !Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false) {		
+	if Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false) {		
 		gui::draw_main_window()
 	}
 	else {

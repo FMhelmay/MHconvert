@@ -10,9 +10,6 @@ use iced::Fill;
 use crate::logic;
 
 
-const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
-
-
 #[derive(Clone)]
 enum ErrorMessage {
 	CloseWindow
@@ -84,7 +81,7 @@ impl MHconvertMainState {
         match message{
         	MainMessage::SelectFiles => {
         		self.selected_files = FileDialog::new()
-					.add_filter("Видеофайл", &AVAILABLE_FILES_EXT)
+					.add_filter("Видеофайл", &logic::AVAILABLE_FILES_EXT)
 					.set_directory("/")
 					.pick_files()
 					.unwrap_or_default();
@@ -121,7 +118,7 @@ impl MHconvertMainState {
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(MainMessage::SelectFiles),
     		pick_list(
-        		AVAILABLE_FILES_EXT,
+        		logic::AVAILABLE_FILES_EXT,
         		self.selected_ext,
 				MainMessage::ExtSelected)
 				.placeholder("Выберите расширение"),
