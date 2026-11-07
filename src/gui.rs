@@ -28,12 +28,13 @@ pub fn draw_main_window() -> iced::Result {
 }
 
 pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
-	let state = MHconvertErrorState {/*window_name: window_name.to_string(), */window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
+	let state = MHconvertErrorState {window_name: window_name.to_string(), window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
 	iced::application(
 		move || state.clone(),
 			MHconvertErrorState::update,
 			MHconvertErrorState::view
 	)
+	.title(MHconvertErrorState::get_title)
 	.window_size((500.0, 200.0))
 	.centered()
 	.resizable(false)
@@ -43,7 +44,7 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 
 #[derive(Clone)]
 struct MHconvertErrorState {
-	//window_name: String,
+	window_name: String,
 	window_text: String,
 	window_button_text: String
 }
@@ -57,6 +58,9 @@ struct MHconvertMainState {
 
 // == == == == ERROR WINDOW
 impl MHconvertErrorState {
+	fn get_title(&self) -> String {
+		self.window_name.clone()
+	}
 	fn update(&mut self, message: ErrorMessage) {
 		match message{
 			ErrorMessage::CloseWindow => {
@@ -77,20 +81,13 @@ impl MHconvertErrorState {
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
-        	MainMessage::SelectFiles => {
-        		self.selected_files = FileDialog::new()
-					.add_filter("Видеофайл", &logic::AVAILABLE_FILES_EXT)
-					.set_directory("/")
-					.pick_files()
-					.unwrap_or_default();
-				self.active_files = vec![true; self.selected_files.len()];
-        	}
+        	MainMessage::SelectFiles => {logic::select_files();}
         	MainMessage::RunConvert => {
         		logic::run_convert(
         			&self.selected_ext,
         			&self.active_files.clone(),
         			&self.selected_files.clone()
-        		)
+        		);
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
