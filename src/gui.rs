@@ -1,4 +1,3 @@
-use std::process::{Command, Stdio};
 use std::path::PathBuf;
 use rfd::FileDialog;
 
@@ -29,8 +28,7 @@ pub fn draw_main_window() -> iced::Result {
 }
 
 pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
-	println!("GUI,DRAW_ERROR_WINDOW: создано окно {}, оно извещает следующее: {}. {}", window_name, window_text, window_button_text);
-	let state = MHconvertErrorState {window_name: window_name.to_string(), window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
+	let state = MHconvertErrorState {/*window_name: window_name.to_string(), */window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
 	iced::application(
 		move || state.clone(),
 			MHconvertErrorState::update,
@@ -45,7 +43,7 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 
 #[derive(Clone)]
 struct MHconvertErrorState {
-	window_name: String,
+	//window_name: String,
 	window_text: String,
 	window_button_text: String
 }
@@ -89,9 +87,9 @@ impl MHconvertMainState {
         	}
         	MainMessage::RunConvert => {
         		logic::run_convert(
-        			self.selected_ext,
-        			self.active_files.clone(),
-        			self.selected_files.clone()
+        			&self.selected_ext,
+        			&self.active_files.clone(),
+        			&self.selected_files.clone()
         		)
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}

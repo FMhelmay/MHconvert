@@ -9,12 +9,11 @@ pub fn check_ffmpeg() -> bool{
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
 
-pub fn run_convert(selected_ext: Option<&'static str>, active_files: Vec<bool>, selected_files: Vec<PathBuf>) {
+pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &Vec<bool>, selected_files: &Vec<PathBuf>) {
 	for (file_index, file_path) in selected_files.iter().enumerate() {
         if active_files[file_index] {
 			let ext = selected_ext.unwrap_or("error");
 				let file2 = file_path.with_extension(ext);
-
        				Command::new("ffmpeg")
 						.arg("-y")
     					.arg("-loglevel").arg("quiet")
