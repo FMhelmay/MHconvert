@@ -27,17 +27,23 @@ pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &[bool], s
 	for (file_index, file_path) in selected_files.iter().enumerate() {
         if active_files[file_index] {
 			let ext = selected_ext.unwrap_or("error");
-			let file2 = format!("{}.{}", add_stamp(file_path.to_string_lossy().as_ref(), "%d.%m.%Y_%H.%M"), ext);
-       			Command::new("ffmpeg")
-					.arg("-y")
-    				.arg("-loglevel").arg("quiet")
-					.arg("-threads").arg("0")
-					.arg("-i").arg(file_path)
-					.arg(file2)
-					.stdout(Stdio::null())
-					.stderr(Stdio::null())
-					.status()
-					.expect("Не удалось запустить процесс");
+			let file2 = add_stamp(
+				file_path
+				.with_extension("")
+				.to_string_lossy()
+				.as_ref(),
+				"%d.%m.%Y_%H.%M");
+			println!("{}.{}", file2, ext);
+       		Command::new("ffmpeg")
+				.arg("-y")
+    			.arg("-loglevel").arg("quiet")
+				.arg("-threads").arg("0")
+				.arg("-i").arg(file_path)
+				.arg(format!("{}.{}", file2, ext))
+				.stdout(Stdio::null())
+				.stderr(Stdio::null())
+				.status()
+				.expect("Не удалось запустить процесс");
 		}
 	}
 }
