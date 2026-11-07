@@ -23,7 +23,7 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files_bool_len = vec![true; selected_files.len()];
 	(selected_files, selected_files_bool_len)
 }
-pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &Vec<bool>, selected_files: &Vec<PathBuf>) {
+pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &[bool], selected_files: &[PathBuf]) {
 	for (file_index, file_path) in selected_files.iter().enumerate() {
         if active_files[file_index] {
 			let ext = selected_ext.unwrap_or("error");
