@@ -50,7 +50,7 @@ struct MHconvertErrorState {
 	window_button_text: String
 }
 
-#[derive(Default)]
+#[derive(Clone, Default)]
 struct MHconvertMainState {
 	selected_ext: Option<&'static str>,
 	selected_files: Vec<PathBuf>,
@@ -88,25 +88,11 @@ impl MHconvertMainState {
 				self.active_files = vec![true; self.selected_files.len()];
         	}
         	MainMessage::RunConvert => {
-        		for (file_index, file_path) in self.selected_files.iter().enumerate() {
-        			if self.active_files[file_index] {
-        				println!("{:?}", file_path);
-						let ext = self.selected_ext.unwrap_or("error");
-						let file2 = file_path.with_extension(ext);
-
-        				println!("{:?}", file2);
-        				Command::new("ffmpeg")
-							.arg("-y")
-	    					.arg("-loglevel").arg("quiet")
-							.arg("-threads").arg("0")
-							.arg("-i").arg(file_path)
-							.arg(file2)
-							.stdout(Stdio::null())
-							.stderr(Stdio::null())
-							.status()
-							.expect("Не удалось запустить процесс");
-        			}
-        		}
+        		logic::run_convert(
+        			self.selected_ext,
+        			self.active_files.clone(),
+        			self.selected_files.clone()
+        		)
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
