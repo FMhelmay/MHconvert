@@ -33,7 +33,6 @@ pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &[bool], s
 				.to_string_lossy()
 				.as_ref(),
 				"%d.%m.%Y_%H.%M");
-			println!("{}.{}", file2, ext);
        		Command::new("ffmpeg")
 				.arg("-y")
     			.arg("-loglevel").arg("quiet")
