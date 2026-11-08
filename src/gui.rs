@@ -21,7 +21,6 @@ enum MainMessage {
 	CheckboxFileToggled(usize, bool)
 }
 
-
 pub fn draw_main_window() -> iced::Result {
 	iced::run(MHconvertMainState::update, MHconvertMainState::view)
 }
@@ -51,9 +50,28 @@ struct MHconvertErrorState {
 #[derive(Clone, Default)]
 struct MHconvertMainState {
 	selected_ext: Option<&'static str>,
-	selected_files: Vec<PathBuf>,
-	active_files: Vec<bool>
+	files: Vec<FileItem>
+	//selected_files: Vec<PathBuf>,
+	//active_files: Vec<bool>
 }
+
+#[derive(Clone, Default)]
+pub struct FileItem {
+	pub file: PathBuf,
+	pub is_active: bool,
+	pub status: Status
+}
+
+#[derive(Clone, Default, PartialEq)]
+pub enum Status {
+	Success,
+	Error,
+
+	InProcess,
+	#[default]
+	NotActive
+}
+
 
 // == == == == ERROR WINDOW
 impl MHconvertErrorState {
@@ -86,22 +104,30 @@ impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
         	MainMessage::SelectFiles => {
-				(self.selected_files, self.active_files) = logic::select_files();
+				let (file_path, is_active) = logic::select_files();
+				self.files = file_path
+					.into_iter()
+					.zip(is_active)
+					.map(|(file_path, active)| FileItem{
+						file: file_path,
+						is_active: active,
+						status: Status::NotActive
+					})
+					.collect();
         	}
         	MainMessage::RunConvert => {
         		logic::run_convert(
         			&self.selected_ext,
-        			&self.active_files.clone(),
-        			&self.selected_files.clone()
+        			&self.files
         		);
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
-			MainMessage::CheckboxFileToggled(index, is_selected) => {self.active_files[index] = is_selected;}
+			MainMessage::CheckboxFileToggled(index, is_selected) => {self.files[index].is_active = is_selected;}
 		}
 	}
 
 	fn view(&self) -> Row<'_, MainMessage> {
-    	let is_allowed_convert: bool = self.selected_ext.is_some() && self.active_files.contains(&true);
+    	let is_allowed_convert: bool = self.selected_ext.is_some() && self.files.iter().any(|item| item.is_active);
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(MainMessage::SelectFiles),
     		pick_list(
@@ -112,15 +138,11 @@ impl MHconvertMainState {
 			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None})
 		];
 		let mut file_check = column![];
-			for (file_index, file_path) in self.selected_files.iter().enumerate() {
-            	file_check = file_check.push(
-            	checkbox(
-            	*self.active_files
-            	.get(file_index)
-            	.unwrap_or(&false))
-						.label(file_path.to_string_lossy())
-						.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
-				).spacing(5);
+			for (file_index, FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
+            	file_check = file_check.push(checkbox(*is_active)
+					.label(file.to_string_lossy())
+					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
+					.spacing(5));
 			}
 		row![btn_picklist, file_check]
 

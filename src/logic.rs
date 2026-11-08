@@ -4,6 +4,10 @@ use std::path::PathBuf;
 use rfd::FileDialog;
 
 
+use crate::gui::FileItem;
+use crate::gui::Status;
+
+
 pub const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
 
 pub fn add_stamp(file_name: &str, format: &str) -> String {
@@ -23,12 +27,12 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files_bool_len = vec![true; selected_files.len()];
 	(selected_files, selected_files_bool_len)
 }
-pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &[bool], selected_files: &[PathBuf]) {
-	for (file_index, file_path) in selected_files.iter().enumerate() {
-        if active_files[file_index] {
+pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) {
+	for (_file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
+        if *is_active && status == &Status::NotActive {
 			let ext = selected_ext.unwrap_or("error");
 			let file2 = add_stamp(
-				file_path
+				file
 				.with_extension("")
 				.to_string_lossy()
 				.as_ref(),
@@ -37,7 +41,7 @@ pub fn run_convert(selected_ext: &Option<&'static str>, active_files: &[bool], s
 				.arg("-y")
     			.arg("-loglevel").arg("quiet")
 				.arg("-threads").arg("0")
-				.arg("-i").arg(file_path)
+				.arg("-i").arg(file)
 				.arg(format!("{}.{}", file2, ext))
 				.stdout(Stdio::null())
 				.stderr(Stdio::null())
