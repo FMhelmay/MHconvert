@@ -42,7 +42,7 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files_bool_len = vec![true; selected_files.len()];
 	(selected_files, selected_files_bool_len)
 }
-pub fn run_convert(selected_ext: &Option<&'static str>, files: &mut [FileItem]) {
+pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) {
 	let mut files2: Vec<Status> = Vec::new();
 	for (file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
         if *is_active && status == &Status::NotActive {
@@ -64,8 +64,9 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &mut [FileItem]) 
 				.stderr(Stdio::null())
 				.status();
 				
-				Ok(exit) if exit.success() {files2[file_index] = Status::Success;}
-				else {files2[file_index] = Status::Error;}
+				files2[file_index] = 
+					if result.is_ok_and(|file_status| file_status.success()) {Status::Success}
+					else {Status::Error}
 			}
 		}
 	}
