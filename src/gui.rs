@@ -51,26 +51,7 @@ struct MHconvertErrorState {
 struct MHconvertMainState {
 	selected_ext: Option<&'static str>,
 	files: Vec<logic::FileItem>
-	//selected_files: Vec<PathBuf>,
-	//active_files: Vec<bool>
 }
-// 
-// #[derive(Clone, Default)]
-// struct FileItem {
-// 	file: PathBuf,
-// 	is_active: bool,
-// 	status: Status
-// }
-// 
-// #[derive(Clone, Default, PartialEq)]
-// enum Status {
-// 	Success,
-// 	Error,
-// 
-// 	InProcess,
-// 	#[default]
-// 	NotActive
-// }
 
 
 // == == == == ERROR WINDOW
