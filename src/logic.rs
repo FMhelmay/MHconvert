@@ -42,7 +42,8 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files_bool_len = vec![true; selected_files.len()];
 	(selected_files, selected_files_bool_len)
 }
-pub fn run_convert(selected_ext: &Option<&'static str>, files: &Vec<FileItem>) {
+pub fn run_convert(selected_ext: &Option<&'static str>, files: Vec<FileItem>) {
+	let mut files2: Vec<Status> = Vec::new();
 	for (_file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
         if *is_active && status == &Status::NotActive {
 			let ext = selected_ext.unwrap_or("error");
@@ -52,6 +53,7 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &Vec<FileItem>) {
 				.to_string_lossy()
 				.as_ref(),
 				"%d.%m.%Y_%H.%M");
+			files2.push(Status::InProcess);
        		Command::new("ffmpeg")
 				.arg("-y")
     			.arg("-loglevel").arg("quiet")
@@ -65,3 +67,4 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &Vec<FileItem>) {
 		}
 	}
 }
+

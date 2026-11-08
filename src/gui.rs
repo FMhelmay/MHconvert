@@ -122,10 +122,10 @@ impl MHconvertMainState {
 			for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
             	file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
-					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
-					.spacing(5));
+					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected)))
+					.spacing(10);
 			}
-		row![btn_picklist, file_check]
+		row![btn_picklist, file_check].spacing(20)
 
 	}
 }
