@@ -44,7 +44,7 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 }
 pub fn run_convert(selected_ext: &Option<&'static str>, files: Vec<FileItem>) {
 	let mut files2: Vec<Status> = Vec::new();
-	for (_file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
+	for (file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
         if *is_active && status == &Status::NotActive {
 			let ext = selected_ext.unwrap_or("error");
 			let file2 = add_stamp(
@@ -54,7 +54,7 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: Vec<FileItem>) {
 				.as_ref(),
 				"%d.%m.%Y_%H.%M");
 			files2.push(Status::InProcess);
-       		Command::new("ffmpeg")
+       		let result = Command::new("ffmpeg")
 				.arg("-y")
     			.arg("-loglevel").arg("quiet")
 				.arg("-threads").arg("0")
@@ -62,8 +62,10 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: Vec<FileItem>) {
 				.arg(format!("{}.{}", file2, ext))
 				.stdout(Stdio::null())
 				.stderr(Stdio::null())
-				.status()
-				.expect("Не удалось запустить процесс");
+				.status();
+			if result.map_or(false, |good_result| good_result.success) {
+				files2[file_index] = Status::InProcess;
+			}
 		}
 	}
 }
