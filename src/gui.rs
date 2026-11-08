@@ -50,27 +50,27 @@ struct MHconvertErrorState {
 #[derive(Clone, Default)]
 struct MHconvertMainState {
 	selected_ext: Option<&'static str>,
-	files: Vec<FileItem>
+	files: Vec<logic::FileItem>
 	//selected_files: Vec<PathBuf>,
 	//active_files: Vec<bool>
 }
-
-#[derive(Clone, Default)]
-pub struct FileItem {
-	pub file: PathBuf,
-	pub is_active: bool,
-	pub status: Status
-}
-
-#[derive(Clone, Default, PartialEq)]
-pub enum Status {
-	Success,
-	Error,
-
-	InProcess,
-	#[default]
-	NotActive
-}
+// 
+// #[derive(Clone, Default)]
+// struct FileItem {
+// 	file: PathBuf,
+// 	is_active: bool,
+// 	status: Status
+// }
+// 
+// #[derive(Clone, Default, PartialEq)]
+// enum Status {
+// 	Success,
+// 	Error,
+// 
+// 	InProcess,
+// 	#[default]
+// 	NotActive
+// }
 
 
 // == == == == ERROR WINDOW
@@ -108,10 +108,10 @@ impl MHconvertMainState {
 				self.files = file_path
 					.into_iter()
 					.zip(is_active)
-					.map(|(file_path, active)| FileItem{
+					.map(|(file_path, active)| logic::FileItem{
 						file: file_path,
 						is_active: active,
-						status: Status::NotActive
+						status: logic::Status::NotActive
 					})
 					.collect();
         	}
@@ -138,7 +138,7 @@ impl MHconvertMainState {
 			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None})
 		];
 		let mut file_check = column![];
-			for (file_index, FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
+			for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
             	file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
