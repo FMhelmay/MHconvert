@@ -125,7 +125,14 @@ impl MHconvertMainState {
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected)))
 					.spacing(10);
 			}
-		row![btn_picklist, file_check].spacing(20)
+		let text_test = column![
+			text("Обычный"),
+			text("Ожидает").style(text::secondary),
+			text("В процессе").style(text::warning),
+			text("Готово").style(text::success),
+			text("Ошибка").style(text::danger)
+		];
+		row![text_test, btn_picklist, file_check].spacing(20)
 
 	}
 }
