@@ -69,6 +69,7 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> V
 					else {Status::Error}
 			}
 		}
+	println!("попытка отправки files2");
 	files2
 	}
 
