@@ -128,8 +128,11 @@ impl MHconvertMainState {
 						let base = checkbox::primary(theme, cb_status);
 						checkbox::Style{text_color:
 							match status {
-								logic::Status::NotActive => Some(theme.extended_palette().warning.base.color),
-								_ => None
+								logic::Status::Success => Some(theme.extended_palette().success.base.color),
+								_ => match is_active {
+									true => {None},
+									_ => Some(theme.extended_palette().secondary.base.color)
+								}
 							},..base}}))
 					.spacing(10);
 		}
