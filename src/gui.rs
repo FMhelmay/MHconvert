@@ -122,17 +122,13 @@ impl MHconvertMainState {
 			for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
             	file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
-					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected)))
+					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
+					//.style(checkbox::danger)
+					.style(|a,b| println!("{a}\n\n\n{b}", a, b))
+					)
 					.spacing(10);
 			}
-		let text_test = column![
-			text("Обычный"),
-			text("Ожидает").style(text::secondary),
-			text("В процессе").style(text::warning),
-			text("Готово").style(text::success),
-			text("Ошибка").style(text::danger)
-		];
-		row![text_test, btn_picklist, file_check].spacing(20)
+		row![btn_picklist, file_check].spacing(20)
 
 	}
 }
