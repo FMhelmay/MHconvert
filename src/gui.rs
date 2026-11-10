@@ -130,18 +130,8 @@ impl MHconvertMainState {
 							match status {
 								logic::Status::NotActive => Some(theme.extended_palette().warning.base.color),
 								_ => None
-							}
-
-
-
-						,..base}
-					})
-				)
-					
-		
-					
-
-					//.spacing(10);
+							},..base}}))
+					.spacing(10);
 		}
 		row![btn_picklist, file_check].spacing(20)
 
