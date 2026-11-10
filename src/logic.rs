@@ -14,7 +14,7 @@ pub struct FileItem {
 	pub status: Status
 }
 
-#[derive(Clone, Default, PartialEq)]
+#[derive(Clone, Copy, Default, PartialEq)]
 pub enum Status {
 	Success,
 	Error,

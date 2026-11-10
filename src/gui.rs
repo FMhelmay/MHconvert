@@ -95,6 +95,16 @@ impl MHconvertMainState {
 					.collect();
         	}
         	MainMessage::RunConvert => {
+        		let new_statuses = logic::run_convert(
+					&self.selected_ext,
+        		    &self.files
+				);
+				let mut new_files:Vec<logic::FileItem> = Vec::new();
+        		for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
+        			new_files.push(logic::FileItem{file: file.clone(), is_active: *is_active, status:new_statuses[file_index]});
+        		}
+        		self.files = new_files;
+        		/*
 				self.files = (&self.files.file)
 					.zip(&self.files.is_active)
 						.zip(logic::run_convert(
@@ -103,6 +113,7 @@ impl MHconvertMainState {
         				)
         			)
         			.map(|(a, b), c| (a, b, c))
+        		*/
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.files[index].is_active = is_selected;}
