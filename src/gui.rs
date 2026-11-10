@@ -71,7 +71,7 @@ impl MHconvertErrorState {
 		let element_window_text = text(&self.window_text);
 		let element_window_button = button(text(&self.window_button_text).width(Fill).center()).on_press(ErrorMessage::CloseWindow);
 		center(column![
-				element_window_text.width(Fill).height(Fill), 
+				element_window_text.width(Fill).height(Fill),
 				row![text("").width(Fill), text("").width(Fill), text("").width(Fill), text("").width(Fill),
 				element_window_button.width(Fill)]]
 			.spacing(15))
@@ -123,9 +123,12 @@ impl MHconvertMainState {
             	file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
-					//.style(checkbox::danger)
-					.style(|a,b| println!("{a}\n\n\n{b}", a, b))
+					.style(|theme, cb_status| {
+						let default_checkbox = checkbox::primary(theme, cb_status);
+						checkbox::Style{..default_checkbox}
+					})
 					)
+
 					.spacing(10);
 			}
 		row![btn_picklist, file_check].spacing(20)
