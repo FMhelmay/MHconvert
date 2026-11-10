@@ -137,6 +137,7 @@ impl MHconvertMainState {
 						checkbox::Style{text_color:
 							match status {
 								logic::Status::Success => Some(theme.extended_palette().success.base.color),
+								logic::Status::Error => Some(theme.extended_palette().danger.base.color),
 								_ => match is_active {
 									true => {None},
 									_ => Some(theme.extended_palette().secondary.base.color) ////////////////////////////////////////////////

@@ -44,7 +44,7 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 }
 pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> Vec<Status>{
 	let mut files2: Vec<Status> = Vec::new();
-	for (file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
+	for FileItem{file, is_active, status} in files.iter() {
         if *is_active && status == &Status::NotActive {
 			let ext = selected_ext.unwrap_or("error");
 			let file2 = add_stamp(
@@ -64,13 +64,17 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> V
 				.stderr(Stdio::null())
 				.status();
 				
-				files2[file_index] = 
+				files2.pop(); files2.push( 
 					if result.is_ok_and(|file_status| file_status.success()) {Status::Success}
 					else {Status::Error}
+				);
 			}
+		else{
+			files2.push(
+				Status::NotActive
+			);
+		}
 		}
 	println!("попытка отправки files2");
 	files2
-	}
-
-
+}
