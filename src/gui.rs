@@ -119,17 +119,24 @@ impl MHconvertMainState {
 			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None})
 		];
 		let mut file_check = column![];
-		for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
+		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
        			file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
 				
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 					.style(|theme, cb_status| {
 						let base = checkbox::primary(theme, cb_status);
-						checkbox::Style{text_color:Some(theme.extended_palette().warning.base.color),..base}}
-					)
+						checkbox::Style{text_color:
+							match status {
+								logic::Status::NotActive => Some(theme.extended_palette().warning.base.color),
+								_ => None
+							}
 
-					)
+
+
+						,..base}
+					})
+				)
 					
 		
 					
