@@ -1,8 +1,6 @@
-use std::path::PathBuf;
-
 use iced::widget::{text, button, pick_list, checkbox};
-use iced::widget::{Container, container, center};
-use iced::widget::{Column, column, Row, row};
+use iced::widget::{Container, center};
+use iced::widget::{column, Row, row};
 use iced::Fill;
 
 use crate::logic;
@@ -131,7 +129,7 @@ impl MHconvertMainState {
 								logic::Status::Success => Some(theme.extended_palette().success.base.color),
 								_ => match is_active {
 									true => {None},
-									_ => Some(theme.extended_palette().secondary.base.color)
+									_ => Some(theme.extended_palette().secondary.base.color) ////////////////////////////////////////////////
 								}
 							},..base}}))
 					.spacing(10);
