@@ -6,7 +6,7 @@ use rfd::FileDialog;
 
 pub const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
 
-
+ 
 #[derive(Clone, Default)]
 pub struct FileItem {
 	pub file: PathBuf,
@@ -42,7 +42,7 @@ pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files_bool_len = vec![true; selected_files.len()];
 	(selected_files, selected_files_bool_len)
 }
-pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) {
+pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> Vec<Status>{
 	let mut files2: Vec<Status> = Vec::new();
 	for (file_index, FileItem{file, is_active, status}) in files.iter().enumerate() {
         if *is_active && status == &Status::NotActive {
@@ -69,6 +69,7 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) {
 					else {Status::Error}
 			}
 		}
+	files2
 	}
 
 

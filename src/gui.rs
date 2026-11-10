@@ -95,10 +95,14 @@ impl MHconvertMainState {
 					.collect();
         	}
         	MainMessage::RunConvert => {
-        		logic::run_convert(
-        			&self.selected_ext,
-        			&self.files
-        		);
+				self.files = (&self.files.file)
+					.zip(&self.files.is_active)
+						.zip(logic::run_convert(
+        					&self.selected_ext,
+        					&self.files
+        				)
+        			)
+        			.map(|(a, b), c| (a, b, c))
         	}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.files[index].is_active = is_selected;}
