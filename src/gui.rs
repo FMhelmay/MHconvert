@@ -138,11 +138,19 @@ impl MHconvertMainState {
 							match status {
 								logic::Status::Success => Some(theme.extended_palette().success.base.color),
 								logic::Status::Error => Some(theme.extended_palette().danger.base.color),
+								logic::Status::InProcess => Some(theme.extended_palette().warning.base.color),
 								_ => match is_active {
 									true => {None},
 									_ => Some(theme.extended_palette().secondary.base.color)
 								}
-							},..base}}))
+							},..base}}).style(
+								match status {
+									logic::Status::Success => checkbox::success,
+									logic::Status::Error => checkbox::danger,
+									logic::Status::InProcess => checkbox::secondary,
+									_ => checkbox::primary
+									}))
+										
 					.spacing(10);
 		}
 		row![btn_picklist, file_check].spacing(20)
