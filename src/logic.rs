@@ -63,18 +63,11 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> V
 				.stdout(Stdio::null())
 				.stderr(Stdio::null())
 				.status();
-				
+
 				files2.pop(); files2.push( 
 					if result.is_ok_and(|file_status| file_status.success()) {Status::Success}
-					else {Status::Error}
-				);
-			}
-		else{
-			files2.push(
-				Status::NotActive
-			);
+					else {Status::Error});}
+		else{files2.push(Status::NotActive);}
 		}
-		}
-	println!("попытка отправки files2");
 	files2
 }

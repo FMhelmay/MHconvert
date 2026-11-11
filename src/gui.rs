@@ -140,7 +140,7 @@ impl MHconvertMainState {
 								logic::Status::Error => Some(theme.extended_palette().danger.base.color),
 								_ => match is_active {
 									true => {None},
-									_ => Some(theme.extended_palette().secondary.base.color) ////////////////////////////////////////////////
+									_ => Some(theme.extended_palette().secondary.base.color)
 								}
 							},..base}}))
 					.spacing(10);
