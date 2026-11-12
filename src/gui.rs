@@ -128,8 +128,8 @@ impl MHconvertMainState {
         		self.selected_ext,
 				MainMessage::ExtSelected)
 				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press_maybe(if is_selected_files {Some(MainMessage::RunConvert)} else {None}),
-			button("Убрать выбранные").on_press_maybe(if is_allowed_convert {Some(MainMessage::ClearSelected)} else {None})
+			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None}),
+			button("Убрать выбранные").on_press_maybe(if is_selected_files {Some(MainMessage::ClearSelected)} else {None})
 		];
 		let mut file_check = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
