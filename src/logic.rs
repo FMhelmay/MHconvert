@@ -29,11 +29,11 @@ pub fn check_ffmpeg() -> bool {
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
 
-pub fn clear_selected(files:Vec<FileItem>) -> Vec<FileItem> {
+pub fn clear_selected(files:&Vec<FileItem>) -> Vec<FileItem> {
 	let mut new_vector:Vec<FileItem> = Vec::new();
-	for (index, FileItem{is_active, ..}) in files.iter().enumerate() {
-		if *is_active {
-			new_vector = new_vector.push(files[index])
+	for file in files {
+		if file.is_active {
+			new_vector.push(file.clone())
 		}
 	}
 	new_vector

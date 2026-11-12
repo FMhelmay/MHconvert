@@ -15,6 +15,7 @@ enum ErrorMessage {
 enum MainMessage {
 	RunConvert,
 	SelectFiles,
+	ClearSelected,
 	ExtSelected(&'static str),
 	CheckboxFileToggled(usize, bool)
 }
@@ -110,14 +111,16 @@ impl MHconvertMainState {
 	        		self.files = new_files;
 	        	}
         	}
-            MainMessage::ClearSelected(files) => {self.files = logic::clear_selected(files)};
+            MainMessage::ClearSelected => {self.files = logic::clear_selected(&self.files);}
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.files[index].is_active = is_selected;}
 		}
 	}
 
 	fn view(&self) -> Row<'_, MainMessage> {
-    	let is_allowed_convert: bool = self.selected_ext.is_some() && self.files.iter().any(|item| item.is_active);
+    	let is_selected_ext: bool = self.selected_ext.is_some();
+    	let is_selected_files: bool = self.files.iter().any(|item| item.is_active);
+    	let is_allowed_convert: bool = is_selected_ext && is_selected_files;
     	let btn_picklist = column![
     		button("Выбрать файлы").on_press(MainMessage::SelectFiles),
     		pick_list(
@@ -125,7 +128,7 @@ impl MHconvertMainState {
         		self.selected_ext,
 				MainMessage::ExtSelected)
 				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None}),
+			button("Конвертать").on_press_maybe(if is_selected_files {Some(MainMessage::RunConvert)} else {None}),
 			button("Убрать выбранные").on_press_maybe(if is_allowed_convert {Some(MainMessage::ClearSelected)} else {None})
 		];
 		let mut file_check = column![];
