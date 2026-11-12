@@ -25,13 +25,24 @@ pub enum Status {
 }
 
 
+pub fn check_ffmpeg() -> bool {
+	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
+}
+
+pub fn clear_selected(files:Vec<FileItem>) -> Vec<FileItem> {
+	let mut new_vector:Vec<FileItem> = Vec::new();
+	for (index, FileItem{is_active, ..}) in files.iter().enumerate() {
+		if *is_active {
+			new_vector = new_vector.push(files[index])
+		}
+	}
+	new_vector
+}
+
 pub fn add_stamp(file_name: &str, format: &str) -> String {
 	let now_time = Local::now().format(format).to_string();
 	format!("{}___{}", file_name, now_time)
-}
 
-pub fn check_ffmpeg() -> bool {
-	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
 pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
 	let selected_files = FileDialog::new()

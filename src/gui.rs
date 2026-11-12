@@ -110,6 +110,7 @@ impl MHconvertMainState {
 	        		self.files = new_files;
 	        	}
         	}
+            MainMessage::ClearSelected(files) => {self.files = logic::clear_selected(files)};
             MainMessage::ExtSelected(ext) => {self.selected_ext = Some(ext);}
 			MainMessage::CheckboxFileToggled(index, is_selected) => {self.files[index].is_active = is_selected;}
 		}
@@ -124,13 +125,13 @@ impl MHconvertMainState {
         		self.selected_ext,
 				MainMessage::ExtSelected)
 				.placeholder("Выберите расширение"),
-			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None})
+			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None}),
+			button("Убрать выбранные").on_press_maybe(if is_allowed_convert {Some(MainMessage::ClearSelected)} else {None})
 		];
 		let mut file_check = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
        			file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
-				
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 					.style(|theme, cb_status| {
 						let base = checkbox::primary(theme, cb_status);
