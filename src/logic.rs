@@ -32,7 +32,7 @@ pub fn check_ffmpeg() -> bool {
 pub fn clear_selected(files:&Vec<FileItem>) -> Vec<FileItem> {
 	let mut new_vector:Vec<FileItem> = Vec::new();
 	for file in files {
-		if file.is_active {
+		if !file.is_active {
 			new_vector.push(file.clone())
 		}
 	}
