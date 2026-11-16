@@ -13,11 +13,12 @@ enum ErrorMessage {
 
 #[derive(Debug, Clone)]
 enum MainMessage {
-	RunConvert,
-	SelectFiles,
-	ClearSelected,
+	CheckboxFileToggled(usize, bool),
 	ExtSelected(&'static str),
-	CheckboxFileToggled(usize, bool)
+	ClearSelected,
+	SelectFiles,
+	RunConvert,
+	SelectAll
 }
 
 pub fn draw_main_window() -> iced::Result {
@@ -95,6 +96,9 @@ impl MHconvertMainState {
 					})
 					.collect();
         	}
+        	MainMessage::SelectAll => {
+        		
+        	}
         	MainMessage::RunConvert => {
         		let new_statuses = logic::run_convert(
 					&self.selected_ext,
@@ -129,7 +133,8 @@ impl MHconvertMainState {
 				MainMessage::ExtSelected)
 				.placeholder("Выберите расширение"),
 			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None}),
-			button("Убрать выбранные").on_press_maybe(if is_selected_files {Some(MainMessage::ClearSelected)} else {None})
+			button("Убрать выбранные").on_press_maybe(if is_selected_files {Some(MainMessage::ClearSelected)} else {None}),
+			button("Выбрать все").on_press(MainMessage::SelectAll)
 		];
 		let mut file_check = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
