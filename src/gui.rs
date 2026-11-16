@@ -97,10 +97,10 @@ impl MHconvertMainState {
 					.collect();
         	}
         	MainMessage::SelectAll => {
-        		let new_files:Vec<logic::FileItem> = Vec::new();
+        		let mut new_files:Vec<logic::FileItem> = Vec::new();
         		for logic::FileItem{file, is_active, status} in self.files.iter() {
         			println!("{}", is_active);
-        			new_files.push(logic::FileItem{file, true, status});
+        			new_files.push(logic::FileItem{file: file.clone(), is_active: true, status: *status});
         		}
         	}
         	MainMessage::RunConvert => {
