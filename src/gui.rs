@@ -97,7 +97,11 @@ impl MHconvertMainState {
 					.collect();
         	}
         	MainMessage::SelectAll => {
-        		
+        		let new_files:Vec<logic::FileItem> = Vec::new();
+        		for logic::FileItem{file, is_active, status} in self.files.iter() {
+        			println!("{}", is_active);
+        			new_files.push(logic::FileItem{file, true, status});
+        		}
         	}
         	MainMessage::RunConvert => {
         		let new_statuses = logic::run_convert(
