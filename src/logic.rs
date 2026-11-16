@@ -28,7 +28,7 @@ pub enum Status {
 pub fn check_ffmpeg() -> bool {
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
-pub fn select_all(files:&Vec<FileItem>) -> Vec<FileItem> {
+pub fn select_all(files:&[FileItem]) -> Vec<FileItem> {
 	let mut new_files:Vec<FileItem> = Vec::new();
 		for FileItem{file, is_active: _, status} in files.iter() {
 			new_files.push(FileItem{file: file.clone(), is_active: true, status: *status});
@@ -50,14 +50,18 @@ pub fn add_stamp(file_name: &str, format: &str) -> String {
 	format!("{}___{}", file_name, now_time)
 
 }
-pub fn select_files() -> (Vec<PathBuf>, Vec<bool>){
-	let selected_files = FileDialog::new()
+pub fn add_files(files: &mut Vec<FileItem>) -> Vec<FileItem> {
+	let added_files = FileDialog::new()
 		.add_filter("Видеофайл", &AVAILABLE_FILES_EXT)
 		.set_directory("/")
 		.pick_files()
 		.unwrap_or_default();
-	let selected_files_bool_len = vec![true; selected_files.len()];
-	(selected_files, selected_files_bool_len)
+	for file in added_files.iter() {
+		if !files.iter().any(|item| &item.file == file) {
+			files.push(FileItem{file: file.clone(), is_active: true, status: Status::NotActive});
+		}
+	}
+	files.clone()
 }
 pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> Vec<Status>{
 	let mut files2: Vec<Status> = Vec::new();

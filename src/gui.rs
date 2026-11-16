@@ -16,7 +16,7 @@ enum MainMessage {
 	CheckboxFileToggled(usize, bool),
 	ExtSelected(&'static str),
 	ClearSelected,
-	SelectFiles,
+	AddFiles,
 	RunConvert,
 	SelectAll
 }
@@ -84,17 +84,8 @@ impl MHconvertErrorState {
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
-        	MainMessage::SelectFiles => {
-				let (file_path, is_active) = logic::select_files();
-				self.files = file_path
-					.into_iter()
-					.zip(is_active)
-					.map(|(file_path, active)| logic::FileItem{
-						file: file_path,
-						is_active: active,
-						status: logic::Status::NotActive
-					})
-					.collect();
+        	MainMessage::AddFiles => {
+        		logic::add_files(&mut self.files);
         	}
         	MainMessage::SelectAll => {
         		self.files = logic::select_all(&self.files);
@@ -123,7 +114,7 @@ impl MHconvertMainState {
     	let is_selected_files: bool = self.files.iter().any(|item| item.is_active);
     	let is_allowed_convert: bool = is_selected_ext && is_selected_files;
     	let btn_picklist = column![
-    		button("Выбрать файлы").on_press(MainMessage::SelectFiles),
+    		button("Выбрать файлы").on_press(MainMessage::AddFiles),
     		pick_list(
         		logic::AVAILABLE_FILES_EXT,
         		self.selected_ext,
