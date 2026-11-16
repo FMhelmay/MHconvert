@@ -97,21 +97,14 @@ impl MHconvertMainState {
 					.collect();
         	}
         	MainMessage::SelectAll => {
-        		let mut new_files:Vec<logic::FileItem> = Vec::new();
-        		for logic::FileItem{file, is_active: _, status} in self.files.iter() {
-        			new_files.push(logic::FileItem{file: file.clone(), is_active: true, status: *status});
-        		}
-        		self.files = new_files;
+        		self.files = logic::select_all(&self.files);
         	}
         	MainMessage::RunConvert => {
         		let new_statuses = logic::run_convert(
 					&self.selected_ext,
         		    &self.files
 				);
-				if new_statuses.is_empty() {
-					println!("new_statuses пустой")
-				}
-				else {
+				if !new_statuses.is_empty() {
 					let mut new_files:Vec<logic::FileItem> = Vec::new();
 	        		for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
 	        			new_files.push(logic::FileItem{file: file.clone(), is_active: *is_active, status:new_statuses[file_index]});

@@ -28,7 +28,13 @@ pub enum Status {
 pub fn check_ffmpeg() -> bool {
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
-
+pub fn select_all(files:&Vec<FileItem>) -> Vec<FileItem> {
+	let mut new_files:Vec<FileItem> = Vec::new();
+		for FileItem{file, is_active: _, status} in files.iter() {
+			new_files.push(FileItem{file: file.clone(), is_active: true, status: *status});
+		}
+	new_files
+}
 pub fn clear_selected(files:&Vec<FileItem>) -> Vec<FileItem> {
 	let mut new_vector:Vec<FileItem> = Vec::new();
 	for file in files {
