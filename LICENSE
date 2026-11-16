@@ -6,15 +6,21 @@
 // ENGLISH VERSION
 // ----------------------------------------------------------------------------
 // Copyright (c) 2026 mplHelmay, MHconvert. All rights reserved.
+// Licensed under Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 
+// International (CC BY-NC-ND 4.0): https://creativecommons.org
 // 
-// 1. GRANT OF LICENSE
-// This license grants you a non-exclusive, non-transferable right to use 
-// this software in accordance with the terms of this agreement.
+// 1. GRANT OF LICENSE & ATTRIBUTION (BY)
+// This license grants you a non-exclusive right to use, copy, and freely 
+// redistribute this software in any medium or format strictly for non-commercial 
+// purposes. When sharing or mentioning the software, you must give appropriate 
+// credit to mplHelmay (MHconvert) and provide a link to this license.
 // 
-// 2. RESTRICTIONS
+// 2. RESTRICTIONS (NC-ND)
 // You may not:
-// - Modify, reverse engineer, decompile, or disassemble the software.
-// - Rent, lease, lend, sell, or redistribute the software to third parties.
+// - Modify, adapt, remix, transform, build upon, reverse engineer, decompile, 
+//   or disassemble the software, or distribute modified versions (NoDerivatives).
+// - Sell, rent, lease, lend, or use the software for any commercial purposes 
+//   or monetary gain (NonCommercial).
 // - Use the software for any illegal activities or purposes.
 // 
 // 3. INTELLECTUAL PROPERTY AND OWNERSHIP
@@ -40,15 +46,24 @@
 // РУССКАЯ ВЕРСИЯ
 // ----------------------------------------------------------------------------
 // © 2026 mplHelmay, MHconvert. Все права защищены.
+// Распространяется по лицензии Creative Commons Attribution-NonCommercial-
+// NoDerivatives 4.0 International (CC BY-NC-ND 4.0): 
+// https://creativecommons.orgdeed.ru
 // 
-// 1. ПРЕДОСТАВЛЕНИЕ ЛИЦЕНЗИИ
-// Данная лицензия предоставляет вам неисключительное, непередаваемое право 
-// на использование данного программного обеспечения в соответствии с условиями.
+// 1. ПРЕДОСТАВЛЕНИЕ ЛИЦЕНЗИИ И УКАЗАНИЕ АВТОРСТВА (BY)
+// Данная лицензия предоставляет вам неисключительное право использовать, 
+// копировать и свободно распространять данное ПО в неизменном виде на любом 
+// носителе и в любом формате строго в некоммерческих целях. При любом 
+// распространении или упоминании ПО вы обязаны указывать авторство 
+// mplHelmay (MHconvert) и приводить ссылку на данную лицензию.
 // 
-// 2. ОГРАНИЧЕНИЯ
+// 2. ОГРАНИЧЕНИЯ (NC-ND)
 // Вы не имеете права:
-// - Модифицировать, разбирать, декомпилировать или реверс-инжинирить ПО.
-// - Сдавать в аренду, продавать, распространять или передавать ПО третьим лицам.
+// - Модифицировать, перерабатывать, брать за основу для создания производных 
+//   продуктов, разбирать, декомпилировать или реверс-инжинирить ПО, а также 
+//   распространять его измененные версии (Без производных / NoDerivatives).
+// - Продавать, сдавать в аренду или использовать ПО в любых коммерческих целях 
+//   и для извлечения финансовой выгоды (Некоммерческое использование / NonCommercial).
 // - Использовать программное обеспечение для любых незаконных целей.
 // 
 // 3. ИНТЕЛЛЕКТУАЛЬНАЯ СОБСТВЕННОСТЬ И СОБСТВЕННИК
