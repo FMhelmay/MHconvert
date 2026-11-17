@@ -122,10 +122,12 @@ impl MHconvertMainState {
 				.placeholder("Выберите расширение"),
 			button("Конвертать").on_press_maybe(if is_allowed_convert {Some(MainMessage::RunConvert)} else {None}),
 			button("Убрать выбранные").on_press_maybe(if is_selected_files {Some(MainMessage::ClearSelected)} else {None}),
-			button("Выбрать все").on_press(MainMessage::SelectAll)
+			button("Выбрать все").on_press_maybe(if !self.files.is_empty() {Some(MainMessage::SelectAll)} else {None})
+
 		];
 		let mut file_check = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
+				let file_path = file.to_string_lossy(); //ОБРЕЗКА ПУТИ В ПРОЦЕССЕ
        			file_check = file_check.push(checkbox(*is_active)
 					.label(file.to_string_lossy())
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
