@@ -24,15 +24,16 @@ pub enum Status {
 	NotActive
 }
 
-pub fn cut_path(files: &str, finaly_count:usize) -> String {
-	let flen = files.len();
+pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
+	let flen = file_path.len();
 	println!("flen: {}", flen);
 	println!("finaly_count: {}", finaly_count);
+	println!("file_name: {}", file_path);
 	if flen <= finaly_count {
-		files.to_string()
+		file_path.to_string()
 	}
 	else {
-		format!("...{}", &files[flen-finaly_count+3..flen])
+		format!("...{}", &file_path[flen-finaly_count+3..flen])
 	}
 }
 pub fn check_ffmpeg() -> bool {
