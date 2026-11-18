@@ -26,7 +26,9 @@ pub enum Status {
 
 pub fn cut_path(files: &str, finaly_count:usize) -> String {
 	let flen = files.len();
-	if files.len() <= finaly_count {
+	println!("flen: {}", flen);
+	println!("finaly_count: {}", finaly_count);
+	if flen <= finaly_count {
 		files.to_string()
 	}
 	else {
