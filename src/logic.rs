@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use rfd::FileDialog;
 
 
-pub const AVAILABLE_FILES_EXT: [&str; 7] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav"];
+pub const AVAILABLE_FILES_EXT: [&str; 9] = ["webm", "mp4", "mkv", "mov", "avi", "ogg", "wav", "gif", "avif"];
 
  
 #[derive(Clone, Default)]
@@ -26,14 +26,17 @@ pub enum Status {
 
 pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
 	let flen = file_path.len();
-	println!("flen: {}", flen);
-	println!("finaly_count: {}", finaly_count);
-	println!("file_name: {}", file_path);
 	if flen <= finaly_count {
 		file_path.to_string()
 	}
 	else {
-		format!("...{}", &file_path[flen-finaly_count+3..flen])
+	let uflen = file_path.len()-finaly_count;
+	println!("flen: {}", flen);
+	println!("flen2: {}", file_path.chars().skip(uflen).collect::<String>());
+	let file_path2=file_path.chars().skip(uflen).collect::<String>();
+	println!("finaly_count: {}", finaly_count);
+	println!("file_name: {}", file_path);
+		format!("...{}", file_path2)
 	}
 }
 pub fn check_ffmpeg() -> bool {
