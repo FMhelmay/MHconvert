@@ -24,7 +24,15 @@ pub enum Status {
 	NotActive
 }
 
-
+pub fn cut_path(files: &str, finaly_count:usize) -> String {
+	let flen = files.len();
+	if files.len() <= finaly_count {
+		files.to_string()
+	}
+	else {
+		format!("...{}", &files[flen-finaly_count+3..flen])
+	}
+}
 pub fn check_ffmpeg() -> bool {
 	Command::new("ffmpeg").arg("-version").output().map(|output| output.status.success()).unwrap_or(false)
 }
