@@ -1,5 +1,5 @@
 use std::process::{Command, Stdio};
-use chrono::{Local};
+//use chrono::{Local};
 use std::path::PathBuf;
 use rfd::FileDialog;
 
@@ -25,18 +25,23 @@ pub enum Status {
 }
 
 pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
-	let flen = file_path.len();
+	let flen = file_path.chars().count();
 	if flen <= finaly_count {
 		file_path.to_string()
 	}
 	else {
-	let uflen = file_path.len()-finaly_count;
-	println!("flen: {}", flen);
-	println!("flen2: {}", file_path.chars().skip(uflen).collect::<String>());
-	let file_path2=file_path.chars().skip(uflen).collect::<String>();
-	println!("finaly_count: {}", finaly_count);
-	println!("file_name: {}", file_path);
-		format!("...{}", file_path2)
+		let mut cutted_path: PathBuf = PathBuf::new();
+		for i in PathBuf::from(file_path).iter().rev() {
+			let now_len = cutted_path.to_string_lossy().as_ref().chars().count();
+			if now_len - 5 < finaly_count {
+				cutted_path.push(i);
+			}
+		}
+		let mut new_path: PathBuf = PathBuf::new();
+		for i in cutted_path.iter().rev().skip(2) { 
+			new_path.push(i);
+		}
+		format!("/.../{}", new_path.to_string_lossy().as_ref())
 	}
 }
 pub fn check_ffmpeg() -> bool {
@@ -59,11 +64,6 @@ pub fn clear_selected(files:&Vec<FileItem>) -> Vec<FileItem> {
 	new_vector
 }
 
-pub fn add_stamp(file_name: &str, format: &str) -> String {
-	let now_time = Local::now().format(format).to_string();
-	format!("{}___{}", file_name, now_time)
-
-}
 pub fn add_files(files: &mut Vec<FileItem>) -> Vec<FileItem> {
 	let added_files = FileDialog::new()
 		.add_filter("Видеофайл", &AVAILABLE_FILES_EXT)
@@ -82,19 +82,13 @@ pub fn run_convert(selected_ext: &Option<&'static str>, files: &[FileItem]) -> V
 	for FileItem{file, is_active, status} in files.iter() {
         if *is_active && status == &Status::NotActive {
 			let ext = selected_ext.unwrap_or("error");
-			let file2 = add_stamp(
-				file
-				.with_extension("")
-				.to_string_lossy()
-				.as_ref(),
-				"%d.%m.%Y_%H.%M");
 			files2.push(Status::InProcess);
        		let result = Command::new("ffmpeg")
 				.arg("-y")
     			.arg("-loglevel").arg("quiet")
 				.arg("-threads").arg("0")
 				.arg("-i").arg(file)
-				.arg(format!("{}.{}", file2, ext))
+				.arg(file.with_extension(ext).to_string_lossy().as_ref())
 				.stdout(Stdio::null())
 				.stderr(Stdio::null())
 				.status();
