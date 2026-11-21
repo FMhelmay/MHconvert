@@ -32,8 +32,8 @@ pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
 	else {
 		let mut cutted_path: PathBuf = PathBuf::new();
 		for i in PathBuf::from(file_path).iter().rev() {
-			let now_len = cutted_path.to_string_lossy().as_ref().chars().count();
-			if now_len - 5 < finaly_count {
+			let now_len = cutted_path.to_string_lossy().chars().count();
+			if now_len < finaly_count +5{
 				cutted_path.push(i);
 			}
 		}
