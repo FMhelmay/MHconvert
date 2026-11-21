@@ -25,23 +25,19 @@ pub enum Status {
 }
 
 pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
-	let flen = file_path.chars().count();
-	if flen <= finaly_count {
-		file_path.to_string()
+	let binding1 = PathBuf::from(file_path);
+	let binding2 = binding1.file_stem().unwrap_or_default().to_string_lossy();
+	let filename = binding2.as_ref();
+	let filename_len = filename.chars().count();
+	if filename_len < finaly_count {
+		filename.to_string()
 	}
 	else {
-		let mut cutted_path: PathBuf = PathBuf::new();
-		for i in PathBuf::from(file_path).iter().rev() {
-			let now_len = cutted_path.to_string_lossy().chars().count();
-			if now_len < finaly_count +5{
-				cutted_path.push(i);
-			}
-		}
-		let mut new_path: PathBuf = PathBuf::new();
-		for i in cutted_path.iter().rev().skip(2) { 
-			new_path.push(i);
-		}
-		format!("/.../{}", new_path.to_string_lossy().as_ref())
+		let last_chars: String = filename
+			.chars()
+			.skip(filename_len.saturating_sub(finaly_count)+3)
+			.collect();
+		format!("...{}",last_chars)
 	}
 }
 pub fn check_ffmpeg() -> bool {

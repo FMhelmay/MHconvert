@@ -1,4 +1,4 @@
-use iced::widget::{text, button, pick_list, checkbox};
+use iced::widget::{text, button, pick_list, checkbox, tooltip};
 use iced::widget::{Container, center};
 use iced::widget::{column, Row, row};
 use iced::Fill;
@@ -126,9 +126,10 @@ impl MHconvertMainState {
 
 		];
 		let mut file_check = column![];
+		let tooliped_checkboxes = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
 				let file_path = file.to_string_lossy();
-       			file_check = file_check.push(checkbox(*is_active)
+       			let checkbox = file_check = file_check.push(checkbox(*is_active)
 					.label(logic::cut_path(&file_path, 50))
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 					.style(|theme, cb_status| {
@@ -151,6 +152,13 @@ impl MHconvertMainState {
 									}))
 										
 					.spacing(10);
+			tooliped_checkboxes = tooliped_checkboxes.push(
+				tooltip(
+					checkbox.into(),
+					text(file_path),
+					tooltip::Position::FollowCursor
+				)
+			)
 		}
 		row![btn_picklist, file_check].spacing(20)
 
