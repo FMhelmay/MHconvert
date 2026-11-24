@@ -1,3 +1,9 @@
+use iced::widget::{text, button};
+use iced::widget::{Container, center};
+use iced::widget::{column, row};
+use iced::Fill;
+
+
 #[derive(Clone)]
 pub enum ErrorMessage {
 	CloseWindow
@@ -5,12 +11,12 @@ pub enum ErrorMessage {
 
 #[derive(Clone)]
 pub struct MHconvertErrorState {
-	window_name: String,
-	window_text: String,
-	window_button_text: String
+	pub window_name: String,
+	pub window_text: String,
+	pub window_button_text: String
 }
 
-pub impl MHconvertErrorState {
+impl MHconvertErrorState {
 	pub fn get_title(&self) -> String {
 		self.window_name.clone()
 	}

@@ -1,9 +1,8 @@
 mod logic;
 mod gui;
 
-
 fn main() -> iced::Result {
-	if logic::check_ffmpeg() {		
+	if !logic::check_ffmpeg() {		
 		gui::draw_main_window()
 	}
 	else {
