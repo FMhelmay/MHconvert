@@ -1,15 +1,13 @@
 use iced::widget::{text, button, pick_list, checkbox, tooltip};
-use iced::widget::{Container, center};
+use iced::widget::{/*Container, */container/*, center*/};
 use iced::widget::{column, Row, row};
-use iced::Fill;
+//use iced::Fill;
+use std::time::Duration;
 
 use crate::logic;
+//mod gui;
+mod error;
 
-
-#[derive(Clone)]
-enum ErrorMessage {
-	CloseWindow
-}
 
 #[derive(Debug, Clone)]
 enum MainMessage {
@@ -26,7 +24,7 @@ pub fn draw_main_window() -> iced::Result {
 }
 
 pub fn draw_error_window(window_name: &str, window_text: &str, window_button_text: &str) -> iced::Result {
-	let state = MHconvertErrorState {window_name: window_name.to_string(), window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
+	let state = error::MHconvertErrorState {window_name: window_name.to_string(), window_text: window_text.to_string(), window_button_text: window_button_text.to_string()};
 	iced::application(
 		move || state.clone(),
 			MHconvertErrorState::update,
@@ -39,48 +37,6 @@ pub fn draw_error_window(window_name: &str, window_text: &str, window_button_tex
 	.run()
 }
 
-
-#[derive(Clone)]
-struct MHconvertErrorState {
-	window_name: String,
-	window_text: String,
-	window_button_text: String
-}
-
-#[derive(Clone, Default)]
-struct MHconvertMainState {
-	selected_ext: Option<&'static str>,
-	files: Vec<logic::FileItem>
-}
-
-
-// == == == == ERROR WINDOW
-impl MHconvertErrorState {
-	fn get_title(&self) -> String {
-		self.window_name.clone()
-	}
-	fn update(&mut self, message: ErrorMessage) {
-		match message{
-			ErrorMessage::CloseWindow => {
-				std::process::exit(0)
-			}
-		}
-	}
-
-	fn view(&self) -> Container<'_, ErrorMessage> {
-		let element_window_text = text(&self.window_text);
-		let element_window_button = button(text(&self.window_button_text).width(Fill).center()).on_press(ErrorMessage::CloseWindow);
-		center(column![
-				element_window_text.width(Fill).height(Fill),
-				row![text("").width(Fill), text("").width(Fill), text("").width(Fill), text("").width(Fill),
-				element_window_button.width(Fill)]]
-			.spacing(15))
-			.padding(20)
-			.width(Fill)
-			.height(Fill)
-	}
-}
-// == == == == MAIN WINDOW
 impl MHconvertMainState {
     fn update(&mut self, message: MainMessage) {
         match message{
@@ -98,7 +54,7 @@ impl MHconvertMainState {
 				if !new_statuses.is_empty() {
 					let mut new_files:Vec<logic::FileItem> = Vec::new();
 	        		for (file_index, logic::FileItem{file, is_active, status: _}) in self.files.iter().enumerate() {
-	        			new_files.push(logic::FileItem{file: file.clone(), is_active: *is_active, status:new_statuses[file_index]});
+	        			new_files.push(logic::FileItem{file: file.clone(), is_active, status:new_statuses[file_index]});
 	        		}
 	        		self.files = new_files;
 	        	}
@@ -128,7 +84,7 @@ impl MHconvertMainState {
 		let mut tooliped_checkboxes = column![];
 		for (file_index, logic::FileItem{file, is_active, status}) in self.files.iter().enumerate() {
 				let file_path = file.to_string_lossy();
-       			let checkbox = (checkbox(*is_active)
+       			let checkbox = (checkbox(is_active)
 					.label(logic::cut_path(&file_path, 50))
 					.on_toggle(move | is_selected | MainMessage::CheckboxFileToggled(file_index, is_selected))
 					.style(|theme, cb_status| {
@@ -154,9 +110,11 @@ impl MHconvertMainState {
 			tooliped_checkboxes = tooliped_checkboxes.push(
 				tooltip(
 					checkbox,
-					text(file_path),
-					tooltip::Position::FollowCursor
-				)
+					container(
+						text(file_path))
+						.style(container::rounded_box),
+					tooltip::Position::Right
+				).delay(Duration::from_millis(500))
 			)
 		}
 		row![btn_picklist, tooliped_checkboxes].spacing(20)

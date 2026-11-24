@@ -26,7 +26,7 @@ pub enum Status {
 
 pub fn cut_path(file_path: &str, finaly_count:usize) -> String {
 	let binding1 = PathBuf::from(file_path);
-	let binding2 = binding1.file_stem().unwrap_or_default().to_string_lossy();
+	let binding2 = binding1.file_name().unwrap_or_default().to_string_lossy();
 	let filename = binding2.as_ref();
 	let filename_len = filename.chars().count();
 	if filename_len < finaly_count {
