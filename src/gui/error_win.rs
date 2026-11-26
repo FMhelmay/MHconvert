@@ -1,8 +1,8 @@
 use iced::widget::{text, button};
 use iced::widget::{Container, center};
 use iced::widget::{column, row};
-use iced::Fill;
-
+use iced::{Task, Fill};
+use iced::window;
 
 #[derive(Clone)]
 pub enum ErrorMessage {
@@ -17,8 +17,15 @@ pub struct MHconvertErrorState {
 }
 
 impl MHconvertErrorState {
-	pub fn get_title(&self) -> String {
-		self.window_name.clone()
+	pub fn get_title(&self, window_id: window::Id) -> String {
+		window_id.to_string()
+	}
+	pub fn boot(self) -> (Self, Task<ErrorMessage>) {
+		let (article, art2) = window::open(window::Settings::default());
+		println!("{}", article);
+		println!("{:?}", art2);
+		(self, art2.discard())
+		
 	}
 	pub fn update(&mut self, message: ErrorMessage) {
 		match message{
@@ -28,13 +35,19 @@ impl MHconvertErrorState {
 		}
 	}
 
-	pub fn view(&self) -> Container<'_, ErrorMessage> {
+	pub fn view(&self, _window_id: window::Id) -> Container<'_, ErrorMessage> {
 		let element_window_text = text(&self.window_text);
 		let element_window_button = button(text(&self.window_button_text).width(Fill).center()).on_press(ErrorMessage::CloseWindow);
 		center(column![
 				element_window_text.width(Fill).height(Fill),
-				row![text("").width(Fill), text("").width(Fill), text("").width(Fill), text("").width(Fill),
-				element_window_button.width(Fill)]]
+				row![
+					text("").width(Fill),
+					text("").width(Fill),
+					text("").width(Fill),
+					text("").width(Fill),
+					element_window_button.width(Fill)
+				]
+			]
 			.spacing(15))
 			.padding(20)
 			.width(Fill)
